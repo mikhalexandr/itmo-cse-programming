@@ -1,0 +1,22 @@
+version: '3'
+
+tasks:
+  compile:
+    cmds:
+      - mkdir -p build
+      - javac -d build src/Main.java
+    silent: true
+
+  buildJar:
+    deps:
+      - compile
+    cmds:
+      - jar -c -f build/lab1.jar -e Main -C build Main.class
+    silent: true
+
+  runJar:
+    deps:
+      - buildJar
+    cmds:
+      - java -jar build/lab1.jar
+    silent: true
