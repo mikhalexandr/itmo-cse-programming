@@ -1,3 +1,4 @@
+import static java.lang.Math.*;
 import java.util.Random;
 
 public class Main {
@@ -37,15 +38,14 @@ public class Main {
 
     public static double computeElement(int w_i, double x_j) {
         if (w_i == 12) {
-            return Math.cos(Math.tan(Math.atan((x_j - 1.5) / 9.0)));
+            return cos(tan(atan((x_j - 1.5) / 9.0)));
         } else if (w_i == 6 || w_i == 8 || w_i == 10 || w_i == 13 ||
                 w_i == 14 || w_i == 15 || w_i == 17 || w_i == 19) {
-            return Math.sin(
-                    Math.pow(Math.pow(x_j, (1 - x_j) / 1.0 / 4.0) / 2.0, Math.pow(3.0 / (x_j - 1), 2)));
+            return sin(pow(pow(x_j, (1 - x_j) / 1.0 / 4.0) / 2.0, pow(3.0 / (x_j - 1), 2)));
         } else {
-            double a = Math.pow(Math.tan(x_j), 3 * (4 - Math.atan((x_j - 1.5) / 9.0))) + 1;
-            double b = Math.pow(Math.pow((2 / 3.0) / (x_j - (3 / 4.0)), x_j) * (Math.asin((x_j - 1.5) / 9.0) - 1), 2);
-            return Math.atan(Math.cos(Math.pow(a, b)));
+            double a = pow(tan(x_j), 3 * (4 - atan((x_j - 1.5) / 9.0))) + 1;
+            double b = pow(pow((2 / 3.0) / (x_j - (3 / 4.0)), x_j) * (asin((x_j - 1.5) / 9.0) - 1), 2);
+            return atan(cos(pow(a, b)));
         }
     }
 
