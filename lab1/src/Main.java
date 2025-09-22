@@ -41,7 +41,7 @@ public class Main {
             return cos(tan(atan((x_j - 1.5) / 9.0)));
         } else if (w_i == 6 || w_i == 8 || w_i == 10 || w_i == 13 ||
                 w_i == 14 || w_i == 15 || w_i == 17 || w_i == 19) {
-            return sin(pow(pow(x_j, (1 - x_j) / 1.0 / 4.0) / 2.0, pow(3.0 / (x_j - 1), 2)));
+            return sin(pow(pow(x_j, (1 - x_j) / 1.0 / 4.0) / 2.0, pow(3 / (x_j - 1), 2)));
         } else {
             double a = pow(tan(x_j), 3 * (4 - atan((x_j - 1.5) / 9.0))) + 1;
             double b = pow(pow((2 / 3.0) / (x_j - (3 / 4.0)), x_j) * (asin((x_j - 1.5) / 9.0) - 1), 2);
