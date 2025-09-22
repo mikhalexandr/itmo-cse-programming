@@ -4,7 +4,7 @@ tasks:
   compile:
     cmds:
       - mkdir -p build
-      - javac -d build src/Main.java
+      - javac --release 17 -d build src/Main.java
     silent: true
 
   buildJar:
