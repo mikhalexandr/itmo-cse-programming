@@ -20,4 +20,3 @@ tasks:
     cmds:
       - java -jar build/lab1.jar
     silent: true
-
