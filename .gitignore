@@ -15,6 +15,7 @@
 # Конфигурация IDE (Eclipse, IntelliJ IDEA, NetBeans и др.)
 *.iml
 .idea/
+.venv/
 .vscode/
 .project
 .classpath
