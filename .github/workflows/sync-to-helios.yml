@@ -25,6 +25,8 @@ jobs:
           echo "$HELIOS_SSH_PRIVATE_KEY" > key.pem
           chmod 600 key.pem
 
-          rsync -avz --exclude '.git' --exclude '.github' \
+          rsync -avz --exclude '.git' --exclude '.github' --exclude 'README.md' \
             -e "ssh -i key.pem -o StrictHostKeyChecking=no -p 2222" \
             ./ $HELIOS_USER@$HELIOS_HOST:$HELIOS_REMOTE_DIR
+
+          rm -f key.pem
