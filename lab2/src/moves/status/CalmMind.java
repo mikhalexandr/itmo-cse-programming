@@ -8,9 +8,9 @@ public final class CalmMind extends StatusMove {
     }
 
     @Override
-    protected void applySelfEffects(Pokemon p) {
-        p.setMod(Stat.SPECIAL_ATTACK, +1);
-        p.setMod(Stat.SPECIAL_DEFENSE, +1);
+    protected void applySelfEffects(Pokemon self) {
+        self.setMod(Stat.SPECIAL_ATTACK, +1);
+        self.setMod(Stat.SPECIAL_DEFENSE, +1);
     }
 
     @Override

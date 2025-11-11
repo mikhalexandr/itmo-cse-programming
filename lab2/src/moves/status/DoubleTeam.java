@@ -8,8 +8,8 @@ public final class DoubleTeam extends StatusMove {
     }
 
     @Override
-    protected void applySelfEffects(Pokemon p) {
-        p.setMod(Stat.EVASION, +1);
+    protected void applySelfEffects(Pokemon self) {
+        self.setMod(Stat.EVASION, +1);
     }
 
     @Override

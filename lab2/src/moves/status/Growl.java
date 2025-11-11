@@ -1,4 +1,4 @@
-package moves.special;
+package moves.status;
 
 import ru.ifmo.se.pokemon.*;
 

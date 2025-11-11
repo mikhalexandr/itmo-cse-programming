@@ -5,7 +5,7 @@ import moves.physical.*;
 import moves.special.*;
 import moves.status.*;
 
-public class Magearna extends Pokemon {
+public final class Magearna extends Pokemon {
     public Magearna(String name, int level) {
         super(name, level);
         setType(Type.STEEL, Type.FAIRY);

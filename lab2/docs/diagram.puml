@@ -1,0 +1,150 @@
+@startuml
+
+' ==== Покемоны первой команды ====
+package "First Team" {
+    class Magearna {
+        +Magearna(name:String, level:int)
+    }
+    class Eevee {
+        +Eevee(name:String, level:int)
+    }
+    class Vaporeon {
+        +Vaporeon(name:String, level:int)
+    }
+    Magearna --|> ru.ifmo.se.pokemon.Pokemon
+    Eevee --|> ru.ifmo.se.pokemon.Pokemon
+    Vaporeon --|> Eevee
+}
+
+' ==== Покемоны второй команды ====
+package "Second Team" {
+    class Cleffa {
+        +Cleffa(name:String, level:int)
+    }
+    class Clefairy {
+        +Clefairy(name:String, level:int)
+    }
+    class Clefable {
+        +Clefable(name:String, level:int)
+    }
+    Cleffa --|> ru.ifmo.se.pokemon.Pokemon
+    Clefairy --|> Cleffa
+    Clefable --|> Clefairy
+}
+
+' ==== moves.physical ====
+package "moves.physical" {
+    class Facade {
+        +Facade()
+        +describe() : String
+    }
+}
+
+' ==== moves.special ====
+package "moves.special" {
+    class DarkPulse {
+        +DarkPulse()
+        +describe() : String
+        +applyOppEffects(Pokemon)
+    }
+    class Flamethrower {
+        +Flamethrower()
+        +describe() : String
+        +applyOppEffects(Pokemon)
+    }
+    class Psychic {
+        +Psychic()
+        +describe() : String
+        +applyOppEffects(Pokemon)
+    }
+}
+
+' ==== moves.status ====
+package "moves.status" {
+    class BabyDollEyes {
+        +BabyDollEyes()
+        +describe() : String
+        +applyOppEffects(Pokemon)
+    }
+    class CalmMind {
+        +CalmMind()
+        +describe() : String
+        +applySelfEffects(Pokemon)
+    }
+    class DoubleTeam {
+        +DoubleTeam()
+        +describe() : String
+        +applySelfEffects(Pokemon)
+    }
+    class Growl {
+        +Growl()
+        +describe() : String
+        +applyOppEffects(Pokemon)
+    }
+    class Haze {
+        +Haze()
+        +describe() : String
+        +applySelfEffects(Pokemon)
+        +applyOppEffects(Pokemon)
+    }
+    class IronDefense {
+        +IronDefense()
+        +describe() : String
+        +applySelfEffects(Pokemon)
+    }
+    class Swagger {
+        +Swagger()
+        +describe() : String
+        +applyOppEffects(Pokemon)
+    }
+    class ThunderWave {
+        +ThunderWave()
+        +describe() : String
+        +applyOppEffects(Pokemon)
+    }
+}
+
+' ==== Наследование атак ====
+Facade --|> ru.ifmo.se.pokemon.PhysicalMove
+
+DarkPulse --|> ru.ifmo.se.pokemon.SpecialMove
+Flamethrower --|> ru.ifmo.se.pokemon.SpecialMove
+Psychic --|> ru.ifmo.se.pokemon.SpecialMove
+
+BabyDollEyes --|> ru.ifmo.se.pokemon.StatusMove
+CalmMind --|> ru.ifmo.se.pokemon.StatusMove
+DoubleTeam --|> ru.ifmo.se.pokemon.StatusMove
+Growl --|> ru.ifmo.se.pokemon.StatusMove
+Haze --|> ru.ifmo.se.pokemon.StatusMove
+IronDefense --|> ru.ifmo.se.pokemon.StatusMove
+Swagger --|> ru.ifmo.se.pokemon.StatusMove
+ThunderWave --|> ru.ifmo.se.pokemon.StatusMove
+
+' ==== Ассоциации покемонов с атаками ====
+Magearna o-- Facade
+Magearna o-- DarkPulse
+Magearna o-- IronDefense
+Magearna o-- Psychic
+
+Eevee o-- Swagger
+Eevee o-- BabyDollEyes
+Eevee o-- DoubleTeam
+
+Vaporeon o-- Swagger
+Vaporeon o-- BabyDollEyes
+Vaporeon o-- DoubleTeam
+Vaporeon o-- Haze
+
+Cleffa o-- ThunderWave
+Cleffa o-- Flamethrower
+
+Clefairy o-- ThunderWave
+Clefairy o-- Flamethrower
+Clefairy o-- Growl
+
+Clefable o-- ThunderWave
+Clefable o-- Flamethrower
+Clefable o-- Growl
+Clefable o-- CalmMind
+
+@enduml
