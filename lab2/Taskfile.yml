@@ -1,0 +1,15 @@
+version: '3'
+
+tasks:
+  build:
+    cmds:
+      - rm -rf build
+      - mkdir -p build
+      - javac -encoding UTF-8 -cp lib/Pokemon.jar src/Main.java src/pokemons/*.java src/moves/*.java -d build
+    silent: true
+
+  run:
+    cmds:
+      - java -cp lib/Pokemon.jar:build Main
+    deps: [build]
+    silent: true
