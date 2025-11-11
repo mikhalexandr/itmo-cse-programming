@@ -1,7 +1,7 @@
-package pokemons;
+package pokemons.first_team;
 
 import ru.ifmo.se.pokemon.*;
-import moves.*;
+import moves.status.*;
 
 public class Eevee extends Pokemon {
     public Eevee(String name, int level) {

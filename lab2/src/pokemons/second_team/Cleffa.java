@@ -1,7 +1,8 @@
-package pokemons;
+package pokemons.second_team;
 
 import ru.ifmo.se.pokemon.*;
-import moves.*;
+import moves.special.*;
+import moves.status.*;
 
 public class Cleffa extends Pokemon {
     public Cleffa(String name, int level) {

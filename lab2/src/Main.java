@@ -1,5 +1,6 @@
 import ru.ifmo.se.pokemon.Battle;
-import pokemons.*;
+import pokemons.first_team.*;
+import pokemons.second_team.*;
 
 public class Main {
     public static void main(String[] args) {

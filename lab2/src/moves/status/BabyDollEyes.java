@@ -1,10 +1,10 @@
-package moves;
+package moves.status;
 
 import ru.ifmo.se.pokemon.*;
 
-public final class Growl extends StatusMove {
-    public Growl() {
-        super(Type.NORMAL, 0, 100);
+public final class BabyDollEyes extends StatusMove {
+    public BabyDollEyes() {
+        super(Type.FAIRY, 0, 100);
     }
 
     @Override
@@ -14,6 +14,6 @@ public final class Growl extends StatusMove {
 
     @Override
     protected String describe() {
-        return "использует Growl";
+        return "использует Baby-Doll Eyes";
     }
 }

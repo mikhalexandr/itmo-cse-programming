@@ -5,7 +5,7 @@ tasks:
     cmds:
       - rm -rf build
       - mkdir -p build
-      - javac -encoding UTF-8 -cp lib/Pokemon.jar src/Main.java src/pokemons/*.java src/moves/*.java -d build
+      - javac -encoding UTF-8 -cp lib/Pokemon.jar src/Main.java src/pokemons/**/*.java src/moves/**/*.java -d build
     silent: true
 
   run:

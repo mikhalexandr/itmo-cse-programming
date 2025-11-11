@@ -1,7 +1,9 @@
-package pokemons;
+package pokemons.first_team;
 
 import ru.ifmo.se.pokemon.*;
-import moves.*;
+import moves.physical.*;
+import moves.special.*;
+import moves.status.*;
 
 public class Magearna extends Pokemon {
     public Magearna(String name, int level) {
