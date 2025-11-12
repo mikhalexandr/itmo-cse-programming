@@ -1,5 +1,4 @@
 @startuml
-top to bottom direction
 
 ' ==== Покемоны первой команды ====
 package "First Team" {
