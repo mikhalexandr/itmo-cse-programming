@@ -1,22 +1,21 @@
 version: '3'
 
 tasks:
-  compile:
+  build:
     cmds:
+      - rm -rf build
       - mkdir -p build
-      - javac --release 17 -d build src/Main.java
+      - javac --release 17 -encoding UTF-8 -d build src/Main.java
     silent: true
 
-  buildJar:
-    deps:
-      - compile
+  jar:
+    deps: [build]
     cmds:
-      - jar -c -f build/lab1.jar -e Main -C build Main.class
+      - jar -c -f build/lab1.jar -e Main -C build .
     silent: true
 
-  runJar:
-    deps:
-      - buildJar
+  run:
+    deps: [jar]
     cmds:
       - java -jar build/lab1.jar
     silent: true
