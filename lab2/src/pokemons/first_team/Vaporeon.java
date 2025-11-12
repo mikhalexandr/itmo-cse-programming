@@ -3,7 +3,7 @@ package pokemons.first_team;
 import ru.ifmo.se.pokemon.*;
 import moves.status.*;
 
-public final Vaporeon extends Eevee {
+public final class Vaporeon extends Eevee {
     public Vaporeon(String name, int level) {
         super(name, level);
         setType(Type.WATER);
