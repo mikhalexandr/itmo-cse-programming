@@ -1,5 +1,7 @@
 @startuml
 
+class ru.ifmo.se.pokemon.Pokemon
+
 ' ==== Покемоны первой команды ====
 package "First Team" {
     class Magearna {
@@ -11,6 +13,7 @@ package "First Team" {
     class Vaporeon {
         +Vaporeon(name:String, level:int)
     }
+
     Magearna --|> ru.ifmo.se.pokemon.Pokemon
     Eevee --|> ru.ifmo.se.pokemon.Pokemon
     Vaporeon --|> Eevee
@@ -27,6 +30,7 @@ package "Second Team" {
     class Clefable {
         +Clefable(name:String, level:int)
     }
+
     Cleffa --|> ru.ifmo.se.pokemon.Pokemon
     Clefairy --|> Cleffa
     Clefable --|> Clefairy
@@ -36,7 +40,7 @@ package "Second Team" {
 package "moves.physical" {
     class Facade {
         +Facade()
-        +describe() : String
+        #describe() : String
     }
 }
 
@@ -44,18 +48,18 @@ package "moves.physical" {
 package "moves.special" {
     class DarkPulse {
         +DarkPulse()
-        +describe() : String
-        +applyOppEffects(Pokemon)
+        #describe() : String
+        #applyOppEffects(opp:Pokemon)
     }
     class Flamethrower {
         +Flamethrower()
-        +describe() : String
-        +applyOppEffects(Pokemon)
+        #describe() : String
+        #applyOppEffects(opp:Pokemon)
     }
     class Psychic {
         +Psychic()
-        +describe() : String
-        +applyOppEffects(Pokemon)
+        #describe() : String
+        #applyOppEffects(opp:Pokemon)
     }
 }
 
@@ -63,44 +67,44 @@ package "moves.special" {
 package "moves.status" {
     class BabyDollEyes {
         +BabyDollEyes()
-        +describe() : String
-        +applyOppEffects(Pokemon)
+        #describe() : String
+        #applyOppEffects(opp:Pokemon)
     }
     class CalmMind {
         +CalmMind()
-        +describe() : String
-        +applySelfEffects(Pokemon)
+        #describe() : String
+        #applySelfEffects(self:Pokemon)
     }
     class DoubleTeam {
         +DoubleTeam()
-        +describe() : String
-        +applySelfEffects(Pokemon)
+        #describe() : String
+        #applySelfEffects(self:Pokemon)
     }
     class Growl {
         +Growl()
-        +describe() : String
-        +applyOppEffects(Pokemon)
+        #describe() : String
+        #applyOppEffects(opp:Pokemon)
     }
     class Haze {
         +Haze()
-        +describe() : String
-        +applySelfEffects(Pokemon)
-        +applyOppEffects(Pokemon)
+        #describe() : String
+        #applySelfEffects(self:Pokemon)
+        #applyOppEffects(opp:Pokemon)
     }
     class IronDefense {
         +IronDefense()
-        +describe() : String
-        +applySelfEffects(Pokemon)
+        #describe() : String
+        #applySelfEffects(self:Pokemon)
     }
     class Swagger {
         +Swagger()
-        +describe() : String
-        +applyOppEffects(Pokemon)
+        #describe() : String
+        #applyOppEffects(opp:Pokemon)
     }
     class ThunderWave {
         +ThunderWave()
-        +describe() : String
-        +applyOppEffects(Pokemon)
+        #describe() : String
+        #applyOppEffects(opp:Pokemon)
     }
 }
 
