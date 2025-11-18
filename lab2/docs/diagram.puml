@@ -151,4 +151,15 @@ Clefable o-- Flamethrower
 Clefable o-- Growl
 Clefable o-- CalmMind
 
+skinparam classBackgroundColor #FFFFFF
+skinparam legendBackgroundColor #FFFFFF
+skinparam legendBorderColor #666
+skinparam legendFontColor #111
+
+legend top left
+  <b>Legend</b>
+  <color:Green>●</color> <i>— public</i>
+  <color:GoldenRod>◆</color> <i>— protected</i>
+end legend
+
 @enduml
