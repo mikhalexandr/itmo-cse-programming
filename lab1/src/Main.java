@@ -50,9 +50,9 @@ public class Main {
     }
 
     public static void printMatrix(double[][] s) {
-        for (int i = 0; i < s.length; i++) {
-            for (int j = 0; j < s[i].length; j++) {
-                System.out.printf("%8.3f", s[i][j]);
+        for (double[] doubles : s) {
+            for (double aDouble : doubles) {
+                System.out.printf("%8.3f", aDouble);
             }
             System.out.println();
         }
