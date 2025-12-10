@@ -1,0 +1,68 @@
+package implementation;
+
+import base_classes.Item;
+import data_types.Taste;
+import interfaces.Cleanable;
+import interfaces.Edible;
+import java.util.Objects;
+
+public class PotatoTuber extends Item implements Edible, Cleanable {
+    private boolean isCooked;
+    private boolean isClean;
+    
+    public PotatoTuber(double weight) {
+        super("Картофель", weight);
+        this.isCooked = false;
+        this.isClean = false;
+    }
+    
+    public void setCooked(boolean cooked) {
+        this.isCooked = cooked;
+    }
+    
+    public boolean isCooked() {
+        return isCooked;
+    }
+    
+    @Override
+    public Taste getTaste(boolean isCooked) {
+        if (!isCooked) {
+            return Taste.DISGUSTING;
+        }
+        return Taste.DELICIOUS;
+    }
+    
+    @Override
+    public boolean isEdibleRaw() {
+        return false;
+    }
+    
+    @Override
+    public void clean() {
+        this.isClean = true;
+    }
+    
+    @Override
+    public boolean isClean() {
+        return isClean;
+    }
+    
+    @Override
+    public String toString() {
+        return super.toString() + " (cooked: " + isCooked + ", clean: " + isClean + ")";
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        PotatoTuber that = (PotatoTuber) o;
+        return isCooked == that.isCooked && isClean == that.isClean;
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), isCooked, isClean);
+    }
+}

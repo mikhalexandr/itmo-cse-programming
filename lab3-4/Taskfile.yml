@@ -1,0 +1,21 @@
+version: '3'
+
+tasks:
+  build:
+    cmds:
+      - rm -rf build
+      - mkdir -p build
+      - javac --release 17 -encoding UTF-8 -d build $(find src -name "*.java")
+    silent: true
+
+  jar:
+    deps: [build]
+    cmds:
+      - jar -c -f build/lab3-4.jar -e Main -C build .
+    silent: true
+
+  run:
+    deps: [jar]
+    cmds:
+      - java -jar build/lab3-4.jar
+    silent: true

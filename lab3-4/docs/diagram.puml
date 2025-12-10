@@ -1,0 +1,245 @@
+@startuml
+' ============================================
+' 0. MANUAL CONFIGURATION
+' ============================================
+skinparam backgroundColor #FFFFFF
+skinparam linetype ortho
+skinparam shadowing false
+skinparam roundcorner 8
+
+skinparam nodesep 60
+skinparam ranksep 60
+skinparam class {
+    BackgroundColor #F8F9FA
+    BorderColor #2F4F4F
+    ArrowColor #2F4F4F
+}
+
+' ============================================
+' 1. LEGEND
+' ============================================
+legend top right
+|= Access Modifiers |= |
+| <color:Green>●</color> | public |
+| <color:GoldenRod>◆</color>| protected |
+| <color:Red>■</color> | private |
+end legend
+
+' ============================================
+' 2. INTERFACES
+' ============================================
+package "Interfaces"{
+    interface Edible {
+        + getTaste(isCooked: boolean): Taste
+        + isEdibleRaw(): boolean
+    }
+    interface Cleanable {
+        + clean(): void
+        + isClean(): boolean
+    }
+    interface Examinable {
+        + examine(): String
+    }
+    interface Uprootable {
+        + uproot(): void
+        + isUprooted(): boolean
+    }
+}
+
+' ============================================
+' 3. DATA TYPES (Enums & Records)
+' ============================================
+package "Data Types" {
+    enum Mood {
+        NORMAL
+        ANGRY
+        TIRED
+        HAPPY
+    }
+
+    enum GroundType {
+        LOOSE
+        NORMAL
+    }
+
+    enum Taste {
+        DELICIOUS
+        DISGUSTING
+    }
+
+    enum PlantColor {
+        DARK_GREEN
+        LIGHT_GREEN
+        YELLOW
+    }
+
+    record Location  {
+        - x: int
+        - y: int
+        + Location(x: int, y: int)
+    }
+}
+
+' ============================================
+' 4. EXCEPTIONS
+' ============================================
+package "Exceptions" {
+    exception PlantNotFoundException {
+        + PlantNotFoundException(msg: String)
+        + getMessage(): String
+    }
+    exception InvalidActionException <<Exception>> {
+        + InvalidActionException(msg: String)
+        + getMessage(): String
+    }
+    exception DisgustingTasteException <<Exception>> {
+        + DisgustingTasteException(msg: String)
+        + getMessage(): String
+    }
+    exception InventoryFullException <<Exception>> {
+        + InventoryFullException(msg: String)
+        + getMessage(): String
+    }
+}
+
+' ============================================
+' 5. ABSTRACTIONS
+' ============================================
+package "Base Classes" {
+    abstract class Item {
+        # name: String
+        # weight: double
+        + Item(name: String, weight: double)
+        + toString(): String
+        + equals(o: Object): boolean
+        + hashCode(): int
+    }
+
+    abstract class Plant {
+        # species: String
+        # color: PlantColor
+        # isUprooted: boolean
+        # location: Location
+        + Plant(species: String, color: PlantColor, loc: Location)
+        + {abstract} hasFruit(): boolean
+        + getLocation(): Location
+        + toString(): String
+        + equals(o: Object): boolean
+        + hashCode(): int
+    }
+
+    abstract class Character {
+        # name: String
+        # mood: Mood
+        # currentLocation: Location
+        + Character(name: String, startLoc: Location)
+        + {abstract} move(ground: Ground): void
+        + setLocation(loc: Location): void
+        + toString(): String
+        + equals(o: Object): boolean
+        + hashCode(): int
+    }
+}
+
+' ============================================
+' 6. IMPLEMENTATION AND ENVIRONMENT
+' ============================================
+package "Implementation" {
+    class PotatoTuber {
+        - isCooked: boolean
+        - isClean: boolean
+        + PotatoTuber(weight: double)
+        + setCooked(cooked: boolean): void
+        + toString(): String
+        + equals(o: Object): boolean
+        + hashCode(): int
+    }
+
+    class PotatoPlant {
+        - tubers: List<PotatoTuber>
+        - isBrittle: boolean
+        + PotatoPlant(loc: Location)
+        + getTubers(): List<PotatoTuber>
+        + toString(): String
+        + equals(o: Object): boolean
+        + hashCode(): int
+    }
+
+    class Skuperfield {
+        - hasPotatoMisconception: boolean
+        + Skuperfield(startLoc: Location)
+        + uprootPlant(ground: Ground): void
+        + realizePotatoGrowInGround(): void
+        + curse(reason: String): void
+        + toString(): String
+        + equals(o: Object): boolean
+        + hashCode(): int
+    }
+
+    class Inventory {
+        - maxCapacity: int
+        + Inventory(capacity: int)
+        + addItem(item: Item): void
+        + toString(): String
+        + equals(o: Object): boolean
+        + hashCode(): int
+    }
+
+    class Ground {
+        - type: GroundType
+        + Ground(type: GroundType)
+        + addPlant(plant: Plant): void
+        + getPlantAt(loc: Location): Plant
+        + isDifficultToMove(): boolean
+        + toString(): String
+        + equals(o: Object): boolean
+        + hashCode(): int
+    }
+
+    class Fog {
+        - isDense: boolean
+        + Fog(isDense: boolean)
+        + dissipate(): void
+        + toString(): String
+        + equals(o: Object): boolean
+        + hashCode(): int
+    }
+}
+
+' ============================================
+' 7. RELATIONSHIPS
+' ============================================
+
+' Inheritance
+PotatoTuber -up-|> Item
+PotatoPlant -up-|> Plant
+Skuperfield -up-|> Character
+
+' Interfaces
+PotatoTuber .up.|> Edible
+PotatoTuber .up.|> Cleanable
+Plant .up.|> Examinable
+Plant .up.|> Uprootable
+
+' Composition and Usage
+PotatoPlant o-left- PotatoTuber
+Character *-- Inventory
+Ground o-- Fog
+Ground o-- Plant
+
+' Links to Data Types
+Character o-up- Location
+Plant o-up- Location
+
+' Error Dependencies (Arrows down to Exceptions package)
+Skuperfield .down.> PlantNotFoundException
+Character .down.> InvalidActionException
+Character .down.> DisgustingTasteException
+Inventory .down.> InventoryFullException
+Character .right.> Ground
+
+' Hidden links for package alignment
+Item -[hidden]right- Plant
+Plant -[hidden]right- Character
+
+@enduml
