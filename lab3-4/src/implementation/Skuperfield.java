@@ -90,8 +90,7 @@ public class Skuperfield extends Character {
         }
         plant.uproot();
         String text = "Выдернув из земли один кустик";
-        List<PotatoTuber> tubers = plant.getTubers();
-        if (!tubers.isEmpty()) {
+        if (plant.hasFruit()) {
             text += ", он увидел несколько прицепившихся к корням желтоватых клубней. ";
         } else {
             text += ", он ничего не обнаружил. ";
