@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class Inventory {
-    private int maxCapacity;
-    private List<Item> items;
+    private final int maxCapacity;
+    private final List<Item> items;
     
     public Inventory(int capacity) {
         this.maxCapacity = capacity;
@@ -17,23 +17,11 @@ public class Inventory {
     
     public void addItem(Item item) throws InventoryFullException {
         if (items.size() >= maxCapacity) {
-            throw new InventoryFullException("Inventory is full! Max capacity: " + maxCapacity);
+            throw new InventoryFullException("Карман полон! Максимальная вместимость: " + maxCapacity);
         }
         items.add(item);
     }
-    
-    public List<Item> getItems() {
-        return new ArrayList<>(items);
-    }
-    
-    public int getSize() {
-        return items.size();
-    }
-    
-    public int getMaxCapacity() {
-        return maxCapacity;
-    }
-    
+
     @Override
     public String toString() {
         return "Inventory (size: " + items.size() + "/" + maxCapacity + ", items: " + items + ")";

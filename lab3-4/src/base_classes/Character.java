@@ -17,17 +17,13 @@ public abstract class Character {
         this.name = name;
         this.mood = Mood.NORMAL;
         this.currentLocation = startLoc;
-        this.inventory = new Inventory(10);
+        this.inventory = new Inventory(20);
     }
     
     public abstract String move(Ground ground) throws InvalidActionException;
     
     public void setLocation(Location loc) {
         this.currentLocation = loc;
-    }
-    
-    public Location getCurrentLocation() {
-        return currentLocation;
     }
 
     protected void setMood(Mood mood) {

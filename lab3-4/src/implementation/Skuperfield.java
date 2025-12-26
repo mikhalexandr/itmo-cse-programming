@@ -1,8 +1,7 @@
 package implementation;
 
-import java.util.NoSuchElementException;
 import java.util.Random;
-
+import java.util.Objects;
 import base_classes.Character;
 import data_types.PlantColor;
 import data_types.Location;
@@ -10,8 +9,8 @@ import data_types.Mood;
 import data_types.Taste;
 import exceptions.DisgustingTasteException;
 import exceptions.InvalidActionException;
+import exceptions.InventoryFullException;
 import exceptions.PlantNotFoundException;
-
 import java.util.List;
 
 public class Skuperfield extends Character {
@@ -23,7 +22,7 @@ public class Skuperfield extends Character {
     }
     
     @Override
-    public String move(Ground ground) {
+    public String move(Ground ground) throws InvalidActionException {
         String text;
         if (ground.isDifficultToMove()) {
             switch (this.getMood()) {
@@ -101,12 +100,14 @@ public class Skuperfield extends Character {
 
     public String examine(Ground ground) throws PlantNotFoundException {
         PotatoPlant plant = (PotatoPlant) ground.getPlantAt(currentLocation);
-        PotatoTuber tuber = plant.getTubers().getFirst();
-        String tuberName;
-        tuberName = (tuber != null) ? tuber.getName() : "фантомный прикол";
+        List<PotatoTuber> tubers = plant.getTubers();
+        if (tubers.isEmpty()) {
+            return "Осмотрев внимательно, Скуперфильд ничего не обнаружил. ";
+        }
+        PotatoTuber tuber = tubers.getFirst();
         return String.format(
                 "Осмотрев клубни внимательно, Скуперфильд начал догадываться, что перед ним самый обыкновенный %s. ",
-                tuberName
+                tuber.getName()
         );
     }
     
@@ -114,26 +115,30 @@ public class Skuperfield extends Character {
         this.hasPotatoUncertainty = true;
 
         PotatoPlant plant = (PotatoPlant) ground.getPlantAt(currentLocation);
-        PotatoTuber tuber = plant.getTubers().getFirst();
-        String tuberName = tuber.getName();
+        List<PotatoTuber> tubers = plant.getTubers();
+        if (tubers.isEmpty()) {
+            return "Впрочем, он не был уверен в своей догадке. ";
+        }
+        String tuberName = tubers.getFirst().getName();
 
         return String.format(
                 "Впрочем, он не был уверен в своей догадке, так как до этого видел %s только в жареном или вареном " +
-                "виде и к тому же почему-то вооброжал, что картофель растёт на деревьях. ",
+                "виде и к тому же почему-то воображал, что картофель растёт на деревьях. ",
                 tuberName
         );
     }
     
-    public String tryToEat(Ground ground) throws  PlantNotFoundException, DisgustingTasteException {
+    public String tryToEat(Ground ground) throws PlantNotFoundException, DisgustingTasteException {
         PotatoPlant plant = (PotatoPlant) ground.getPlantAt(currentLocation);
-        PotatoTuber tuber;
-        try {
-            tuber = plant.getTubers().getFirst();
-        } catch (NoSuchElementException e) {
-            return "Нет ни одного клубня!";
+        List<PotatoTuber> tubers = plant.getTubers();
+        
+        if (tubers.isEmpty()) {
+            throw new PlantNotFoundException("Нет ни одного клубня!");
         }
-
+        
+        PotatoTuber tuber = tubers.getFirst();
         String text = "";
+        
         if (!tuber.isClean()) {
             tuber.clean();
             text += "Отряхнув от земли один клубень, ";
@@ -141,37 +146,58 @@ public class Skuperfield extends Character {
 
         text += "Скуперфильд откусил кусочек и попробовал его разжевать. ";
 
-        Taste taste = tuber.getTaste(false);
+        Taste taste = tuber.getTaste();
         if (taste == Taste.DISGUSTING) {
             throw new DisgustingTasteException(text + "Сырой картофель показался ему страшно невкусным, даже противным. ");
-        } else {
-            text += "Картошечка показалась ему вкусной. ";
         }
-
-        return text;
+        
+        return text + "Картошечка показалась ему вкусной. ";
     }
 
-    public String putInPocket(Ground ground, int amount) throws PlantNotFoundException {
+    public String putInPocket(Ground ground, int amount) throws PlantNotFoundException, InventoryFullException {
         PotatoPlant plant = (PotatoPlant) ground.getPlantAt(currentLocation);
         List<PotatoTuber> tubers = plant.getTubers();
+        
+        if (tubers.isEmpty()) {
+            throw new PlantNotFoundException("Нет клубней для сбора!");
+        }
+        
         int count = Math.min(amount, tubers.size());
-        try {
-            for (int i = 0; i < count; i++) {
+        int collected = 0;
+        
+        for (int i = 0; i < count; i++) {
+            try {
                 PotatoTuber tuber = tubers.get(i);
                 this.getInventory().addItem(tuber);
                 plant.removeTuber(tuber);
+                collected++;
+            } catch (IndexOutOfBoundsException e) {
+                break;
             }
-        } catch (Exception e) {
-            return "Скуперфильд устал и лег спать. ";
         }
+        
         return String.format("Сообразив, однако, что никто не стал бы выращивать совершенно бесполезных плодов, " +
                 "он сунул вытащенные из земли %d картофелин в карман пиджака и отправился дальше. ",
-                amount
+                collected
         );
     }
     
     @Override
     public String toString() {
         return super.toString() + " (hasPotatoMisconception: " + hasPotatoUncertainty + ")";
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Skuperfield that = (Skuperfield) o;
+        return hasPotatoUncertainty == that.hasPotatoUncertainty;
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), hasPotatoUncertainty);
     }
 }

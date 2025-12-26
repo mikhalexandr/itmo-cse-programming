@@ -2,11 +2,10 @@ package base_classes;
 
 import data_types.Location;
 import data_types.PlantColor;
-import interfaces.Examinable;
 import interfaces.Uprootable;
 import java.util.Objects;
 
-public abstract class Plant implements Examinable, Uprootable {
+public abstract class Plant implements Uprootable {
     protected String species;
     protected PlantColor color;
     protected boolean isUprooted;

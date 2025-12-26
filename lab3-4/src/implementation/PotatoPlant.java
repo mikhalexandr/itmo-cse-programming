@@ -14,7 +14,9 @@ public class PotatoPlant extends Plant {
         super("PotatoPlant", color, loc, isBrittle);
         this.tubers = new ArrayList<>();
 
-        for (int i = 0; i < 5; i++) {
+        java.util.Random random = new java.util.Random();
+        int tuberCount = 3 + random.nextInt(4);
+        for (int i = 0; i < tuberCount; i++) {
             tubers.add(new PotatoTuber(0.1 + i * 0.05));
         }
     }
@@ -30,11 +32,6 @@ public class PotatoPlant extends Plant {
     @Override
     public boolean hasFruit() {
         return !tubers.isEmpty();
-    }
-    
-    @Override
-    public String examine() {
-        return "Желтоватый клубень";
     }
     
     @Override
@@ -56,4 +53,3 @@ public class PotatoPlant extends Plant {
         return Objects.hash(super.hashCode(), tubers, isBrittle);
     }
 }
-

@@ -17,16 +17,11 @@ public class PotatoTuber extends Item implements Cleanable, Edible {
     }
 
     @Override
-    public Taste getTaste(boolean isCooked) {
-        if (!isCooked || !isEdibleRaw()) {
-            return Taste.DISGUSTING;
+    public Taste getTaste() {
+        if (isCooked) {
+            return Taste.DELICIOUS;
         }
-        return Taste.DELICIOUS;
-    }
-    
-    @Override
-    public boolean isEdibleRaw() {
-        return false;
+        return Taste.DISGUSTING;
     }
     
     @Override

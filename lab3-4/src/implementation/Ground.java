@@ -6,18 +6,19 @@ import data_types.Location;
 import exceptions.InvalidActionException;
 import exceptions.PlantNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class Ground {
-    private GroundType type;
-    private List<Plant> plants;
+    private final GroundType type;
+    private final List<Plant> plants;
     private Fog fog;
     
     public Ground(GroundType type) {
-        this.type = type;
+        this.type = Objects.requireNonNull(type, "Ground type cannot be null");
         this.plants = new ArrayList<>();
         this.fog = null;
     }
@@ -27,43 +28,39 @@ public class Ground {
     }
 
     public String dissipateFog() throws InvalidActionException {
+        if (fog == null) {
+            throw new InvalidActionException("На этой земле нет тумана!");
+        }
         return fog.dissipate();
     }
     
     public void addPlant(Plant plant) {
-        plants.add(plant);
-    }
-
-    public Map<String, Integer> countPlantsByColor() {
-        Map<String, Integer> colorCount = new HashMap<>();
-        for (Plant plant : plants) {
-            String color = String.valueOf(plant.getColor());
-            colorCount.put(color, colorCount.getOrDefault(color, 0) + 1);
-        }
-        return colorCount;
+        plants.add(Objects.requireNonNull(plant, "Plant cannot be null"));
     }
 
     public String getDominantColor() {
-        Map<String, Integer> colorCount = countPlantsByColor();
-        String dominantColor = null;
-        int maxCount = 0;
-        for (Map.Entry<String, Integer> entry : colorCount.entrySet()) {
-            if (entry.getValue() > maxCount) {
-                maxCount = entry.getValue();
-                dominantColor = entry.getKey();
-            }
+        if (plants.isEmpty()) {
+            return null;
         }
-        return dominantColor;
+        Map<String, Integer> colorCount = new HashMap<>();
+        for (Plant plant : plants) {
+            String color = plant.getColor().name();
+            colorCount.merge(color, 1, Integer::sum);
+        }
+        return colorCount.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(null);
     }
 
     public boolean hasMajorityBrittlePlants() {
-        int brittleCount = 0;
-        for (Plant plant : plants) {
-            if (plant.isBrittle()) {
-                brittleCount++;
-            }
+        if (plants.isEmpty()) {
+            return false;
         }
-        return !plants.isEmpty() && brittleCount > plants.size() / 2;
+        long brittleCount = plants.stream()
+                .filter(Plant::isBrittle)
+                .count();
+        return brittleCount > plants.size() / 2;
     }
 
     public int getPlantCount() {
@@ -71,12 +68,13 @@ public class Ground {
     }
     
     public Plant getPlantAt(Location loc) throws PlantNotFoundException {
-        for (Plant plant : plants) {
-            if (plant.getLocation().equals(loc)) {
-                return plant;
-            }
-        }
-        throw new PlantNotFoundException("Скуперфильд начал вырывать фантомные растения (" + loc + ")");
+        Objects.requireNonNull(loc, "Location cannot be null");
+        
+        return plants.stream()
+                .filter(plant -> loc.equals(plant.getLocation()))
+                .findFirst()
+                .orElseThrow(() -> new PlantNotFoundException(
+                    "Скуперфильд начал вырывать фантомные растения (" + loc + ")"));
     }
     
     public boolean isDifficultToMove() {
@@ -86,14 +84,11 @@ public class Ground {
     public GroundType getType() {
         return type;
     }
-
-    public List<Plant> getPlants() {
-        return new ArrayList<>(plants);
-    }
     
     @Override
     public String toString() {
-        return "Ground (type: " + type + ", plants: " + plants.size() + ", fog: " + (fog != null ? fog : "none") + ")";
+        return String.format("Ground (type: %s, plants: %d, fog: %s)", 
+            type, plants.size(), fog != null ? fog : "none");
     }
     
     @Override
@@ -101,7 +96,9 @@ public class Ground {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ground ground = (Ground) o;
-        return type == ground.type && Objects.equals(plants, ground.plants) && Objects.equals(fog, ground.fog);
+        return type == ground.type && 
+               Objects.equals(plants, ground.plants) && 
+               Objects.equals(fog, ground.fog);
     }
     
     @Override
