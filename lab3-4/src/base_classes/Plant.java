@@ -3,6 +3,7 @@ package base_classes;
 import data_types.Location;
 import data_types.PlantColor;
 import interfaces.Uprootable;
+
 import java.util.Objects;
 
 public abstract class Plant implements Uprootable {

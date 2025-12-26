@@ -3,6 +3,7 @@ package implementation;
 import base_classes.Plant;
 import data_types.Location;
 import data_types.PlantColor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -11,7 +12,7 @@ public class PotatoPlant extends Plant {
     private final List<PotatoTuber> tubers;
     
     public PotatoPlant(Location loc, PlantColor color, boolean isBrittle) {
-        super("PotatoPlant", color, loc, isBrittle);
+        super("клубень", color, loc, isBrittle);
         this.tubers = new ArrayList<>();
 
         java.util.Random random = new java.util.Random();

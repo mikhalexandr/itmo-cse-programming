@@ -5,12 +5,8 @@ import data_types.GroundType;
 import data_types.Location;
 import exceptions.InvalidActionException;
 import exceptions.PlantNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+
+import java.util.*;
 
 public class Ground {
     private final GroundType type;

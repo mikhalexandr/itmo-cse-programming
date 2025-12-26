@@ -5,7 +5,10 @@ import exceptions.DisgustingTasteException;
 import exceptions.InvalidActionException;
 import exceptions.InventoryFullException;
 import exceptions.PlantNotFoundException;
-import implementation.*;
+import implementation.Fog;
+import implementation.Ground;
+import implementation.PotatoPlant;
+import implementation.Skuperfield;
 
 
 public class Main {

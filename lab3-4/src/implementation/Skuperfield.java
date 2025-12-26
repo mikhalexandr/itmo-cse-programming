@@ -1,17 +1,18 @@
 package implementation;
 
-import java.util.Random;
-import java.util.Objects;
 import base_classes.Character;
-import data_types.PlantColor;
 import data_types.Location;
 import data_types.Mood;
+import data_types.PlantColor;
 import data_types.Taste;
 import exceptions.DisgustingTasteException;
 import exceptions.InvalidActionException;
 import exceptions.InventoryFullException;
 import exceptions.PlantNotFoundException;
+
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 
 public class Skuperfield extends Character {
     private boolean hasPotatoUncertainty;
