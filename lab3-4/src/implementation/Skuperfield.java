@@ -104,7 +104,7 @@ public class Skuperfield extends Character {
         if (tubers.isEmpty()) {
             return "Осмотрев внимательно, Скуперфильд ничего не обнаружил. ";
         }
-        PotatoTuber tuber = tubers.getFirst();
+        PotatoTuber tuber = tubers.get(0);
         return String.format(
                 "Осмотрев клубни внимательно, Скуперфильд начал догадываться, что перед ним самый обыкновенный %s. ",
                 tuber.getName()
@@ -119,7 +119,7 @@ public class Skuperfield extends Character {
         if (tubers.isEmpty()) {
             return "Впрочем, он не был уверен в своей догадке. ";
         }
-        String tuberName = tubers.getFirst().getName();
+        String tuberName = tubers.get(0).getName();
 
         return String.format(
                 "Впрочем, он не был уверен в своей догадке, так как до этого видел %s только в жареном или вареном " +
@@ -136,7 +136,7 @@ public class Skuperfield extends Character {
             throw new PlantNotFoundException("Нет ни одного клубня!");
         }
         
-        PotatoTuber tuber = tubers.getFirst();
+        PotatoTuber tuber = tubers.get(0);
         String text = "";
         
         if (!tuber.isClean()) {

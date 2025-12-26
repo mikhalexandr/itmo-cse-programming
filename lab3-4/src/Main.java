@@ -12,68 +12,6 @@ import implementation.Skuperfield;
 
 
 public class Main {
-    private static final int TEXT_WIDTH = 120;
-    
-    private static String formatText(String text) {
-        if (text == null || text.isEmpty()) {
-            return text;
-        }
-        
-        StringBuilder result = new StringBuilder();
-        String[] paragraphs = text.split("\n", -1);
-        
-        for (int p = 0; p < paragraphs.length; p++) {
-            String paragraph = paragraphs[p].trim();
-            if (paragraph.isEmpty()) {
-                if (p < paragraphs.length - 1) {
-                    result.append("\n");
-                }
-                continue;
-            }
-            
-            String[] words = paragraph.split("\\s+");
-            StringBuilder currentLine = new StringBuilder();
-            
-            for (String word : words) {
-                if (word.length() > Main.TEXT_WIDTH) {
-                    if (!currentLine.isEmpty()) {
-                        result.append(currentLine).append("\n");
-                        currentLine = new StringBuilder();
-                    }
-                    int pos = 0;
-                    while (pos < word.length()) {
-                        int end = Math.min(pos + Main.TEXT_WIDTH, word.length());
-                        result.append(word, pos, end);
-                        if (end < word.length()) {
-                            result.append("\n");
-                        }
-                        pos = end;
-                    }
-                } else if (currentLine.length() + word.length() + (!currentLine.isEmpty() ? 1 : 0) <= Main.TEXT_WIDTH) {
-                    if (!currentLine.isEmpty()) {
-                        currentLine.append(" ");
-                    }
-                    currentLine.append(word);
-                } else {
-                    if (!currentLine.isEmpty()) {
-                        result.append(currentLine).append("\n");
-                    }
-                    currentLine = new StringBuilder(word);
-                }
-            }
-            
-            if (!currentLine.isEmpty()) {
-                result.append(currentLine);
-            }
-            
-            if (p < paragraphs.length - 1) {
-                result.append("\n");
-            }
-        }
-        
-        return result.toString();
-    }
-    
     public static void main(String[] args) {
         StringBuilder output = new StringBuilder();
         
@@ -138,6 +76,10 @@ public class Main {
             output.append(e.getMessage());
         }
         
-        System.out.print(formatText(output.toString()));
+        String s = output.toString();
+        int max = 125;
+        for (int i = 0; i < s.length(); i += max) {
+            System.out.println(s.substring(i, Math.min(i + max, s.length())));
+        }
     }
 }
