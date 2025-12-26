@@ -6,19 +6,18 @@ import exceptions.InvalidActionException;
 import exceptions.PlantNotFoundException;
 import implementation.*;
 
-import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws PlantNotFoundException {
+    public static void main(String[] args) {
         Ground ground = new Ground(GroundType.LOOSE);
 
         Fog fog = new Fog();
         ground.setFog(fog);
 
         try {
-            ground.dissipateFog();
+            System.out.print(ground.dissipateFog());
         } catch (InvalidActionException e) {
-            System.out.println(e.getMessage());
+            System.out.print(e.getMessage());
         }
 
         Location plantLoc1 = new Location(1, 0);
@@ -34,54 +33,34 @@ public class Main {
         Location startLoc = new Location(0, 0);
         Skuperfield skuperfield = new Skuperfield(startLoc);
 
-        skuperfield.move(ground);
+        System.out.print(skuperfield.move(ground));
 
         try {
-            skuperfield.uprootPlant(ground);
+            System.out.print(skuperfield.uprootPlant(ground));
         } catch (InvalidActionException | PlantNotFoundException e) {
-            System.out.println(e.getMessage());
+            System.out.print(e.getMessage());
         }
 
-        Location currLoc = skuperfield.getCurrentLocation();
-        PotatoPlant plant = (PotatoPlant) ground.getPlantAt(currLoc);
-
-        List<PotatoTuber> tubers = plant.getTubers();
-        if (!tubers.isEmpty()) {
-            System.out.println("он увидел несколько прицепившихся к корням желтоватых клубней.");
+        try {
+            System.out.print(skuperfield.examine(ground));
+            System.out.print(skuperfield.realizePotatoGrowInGround(ground));
+        } catch (PlantNotFoundException e) {
+            System.out.print(e.getMessage());
         }
 
-        String examination = plant.examine();
-        skuperfield.realizePotatoGrowInGround();
-
-        // Скуперфильд пытается съесть сырой картофель
-        System.out.println("\n...откусил кусочек... Сырой картофель показался ему страшно невкусным...");
-        if (!tubers.isEmpty()) {
-            PotatoTuber tuber = tubers.get(0);
-            try {
-                skuperfield.tryToEat(tuber);
-                System.out.println("Скуперфильд съел клубень");
-            } catch (DisgustingTasteException e) {
-                System.out.println("Скуперфильд выплюнул кусок: " + e.getMessage());
-            }
+        try {
+            System.out.print(skuperfield.tryToEat(ground));
+        } catch (PlantNotFoundException | DisgustingTasteException e) {
+            System.out.print(e.getMessage());
         }
 
-        // Скуперфильд кладет картофель в карман
-        System.out.println("\n...сунул вытащенные из земли полдесятка картофелин в карман пиджака...");
-        int count = Math.min(5, tubers.size());
-        for (int i = 0; i < count; i++) {
-            try {
-                PotatoTuber tuber = tubers.get(i);
-                skuperfield.getInventory().addItem(tuber);
-                potatoPlant.removeTuber(tuber);
-                System.out.println("Клубень " + (i + 1) + " добавлен в инвентарь");
-            } catch (Exception e) {
-                System.out.println("Ошибка при добавлении клубня: " + e.getMessage());
-            }
+        try {
+            System.out.print(skuperfield.putInPocket(ground, 5));
+        } catch (PlantNotFoundException e) {
+            System.out.print(e.getMessage());
         }
 
-        tubers = potatoPlant.getTubers();
-        System.out.println("Инвентарь: " + skuperfield.getInventory());
+        System.out.print(skuperfield.move(ground));
 
-        skuperfield.move(ground);
     }
 }

@@ -26,8 +26,8 @@ public class Ground {
         this.fog = fog;
     }
 
-    public void dissipateFog() throws InvalidActionException {
-        fog.dissipate();
+    public String dissipateFog() throws InvalidActionException {
+        return fog.dissipate();
     }
     
     public void addPlant(Plant plant) {

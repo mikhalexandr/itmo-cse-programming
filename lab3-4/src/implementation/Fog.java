@@ -11,12 +11,12 @@ public class Fog {
         this.isDense = true;
     }
     
-    public void dissipate() throws InvalidActionException {
+    public String dissipate() throws InvalidActionException {
         if (!isDense) {
             throw new InvalidActionException("Тумана сейчас нет!");
         } else {
             this.isDense = false;
-            System.out.println("Туман рассеялся.");
+            return "Туман рассеялся. ";
         }
     }
 
@@ -38,6 +38,3 @@ public class Fog {
         return Objects.hash(isDense);
     }
 }
-
-
-

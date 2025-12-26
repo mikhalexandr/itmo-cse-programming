@@ -6,27 +6,19 @@ import interfaces.Cleanable;
 import interfaces.Edible;
 import java.util.Objects;
 
-public class PotatoTuber extends Item implements Edible, Cleanable {
-    private boolean isCooked;
+public class PotatoTuber extends Item implements Cleanable, Edible {
+    private final boolean isCooked;
     private boolean isClean;
     
     public PotatoTuber(double weight) {
-        super("Картофель", weight);
+        super("картофель", weight);
         this.isCooked = false;
         this.isClean = false;
     }
-    
-    public void setCooked(boolean cooked) {
-        this.isCooked = cooked;
-    }
-    
-    public boolean isCooked() {
-        return isCooked;
-    }
-    
+
     @Override
     public Taste getTaste(boolean isCooked) {
-        if (!isCooked) {
+        if (!isCooked || !isEdibleRaw()) {
             return Taste.DISGUSTING;
         }
         return Taste.DELICIOUS;

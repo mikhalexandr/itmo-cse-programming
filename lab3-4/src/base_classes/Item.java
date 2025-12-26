@@ -10,6 +10,10 @@ public abstract class Item {
         this.name = name;
         this.weight = weight;
     }
+
+    public String getName() {
+        return name;
+    }
     
     @Override
     public String toString() {
