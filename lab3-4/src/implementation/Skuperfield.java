@@ -76,7 +76,7 @@ public class Skuperfield extends Character {
     }
 
     private String curse(Ground ground) {
-        String text = " Скуперфильд на все лады проклинал коротышек, вздумавших, словно ему назло, взрыхлить вокруг землю";
+        String text = "Скуперфильд на все лады проклинал коротышек, вздумавших, словно ему назло, взрыхлить вокруг землю";
         if (ground.getPlantCount() > 0) {
             text += " и насадить на его пути все эти кустики. ";
         }
