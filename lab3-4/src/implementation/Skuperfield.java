@@ -50,15 +50,15 @@ public class Skuperfield extends Character {
                 }
                 case TIRED  -> {
                     this.setMood(Mood.ANGRY);
-                    text = "Шагать по рыхлой земле, беспрерывно путаясь ногами в картофельной ботве, было очень утомительно.";
+                    text = "Шагать по рыхлой земле, беспрерывно путаясь ногами в картофельной ботве, было очень утомительно. ";
                     text += this.curse(ground);
                 }
-                case ANGRY -> text = "Скуперфильд, уставший от шагания по рыхлой земле, начал ругаться матом";
-                default -> text = "Скуперфильд шагал во сне";
+                case ANGRY -> text = "Скуперфильд, уставший от шагания по рыхлой земле, начал ругаться матом. ";
+                default -> text = "Скуперфильд шагал во сне. ";
             }
         } else {
             this.setMood(Mood.NORMAL);
-            text = "Скуперфильд легко шагал по мягкой земле";
+            text = "Скуперфильд легко шагал по мягкой земле. ";
         }
 
         Random rnd = new Random();
@@ -78,7 +78,7 @@ public class Skuperfield extends Character {
     private String curse(Ground ground) {
         String text = " Скуперфильд на все лады проклинал коротышек, вздумавших, словно ему назло, взрыхлить вокруг землю";
         if (ground.getPlantCount() > 0) {
-            text += " и насадить на его пути все эти кустики";
+            text += " и насадить на его пути все эти кустики. ";
         }
         return text;
     }
