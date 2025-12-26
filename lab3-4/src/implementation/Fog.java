@@ -1,22 +1,25 @@
 package implementation;
 
+import exceptions.InvalidActionException;
+
 import java.util.Objects;
 
 public class Fog {
     private boolean isDense;
     
-    public Fog(boolean isDense) {
-        this.isDense = isDense;
+    public Fog() {
+        this.isDense = true;
     }
     
-    public void dissipate() {
-        this.isDense = false;
+    public void dissipate() throws InvalidActionException {
+        if (!isDense) {
+            throw new InvalidActionException("Тумана сейчас нет!");
+        } else {
+            this.isDense = false;
+            System.out.println("Туман рассеялся.");
+        }
     }
-    
-    public boolean isDense() {
-        return isDense;
-    }
-    
+
     @Override
     public String toString() {
         return "Fog (dense: " + isDense + ")";
@@ -35,4 +38,6 @@ public class Fog {
         return Objects.hash(isDense);
     }
 }
+
+
 

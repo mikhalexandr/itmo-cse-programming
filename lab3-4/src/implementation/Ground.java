@@ -3,8 +3,11 @@ package implementation;
 import base_classes.Plant;
 import data_types.GroundType;
 import data_types.Location;
+import exceptions.InvalidActionException;
 import exceptions.PlantNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,9 +21,53 @@ public class Ground {
         this.plants = new ArrayList<>();
         this.fog = null;
     }
+
+    public void setFog(Fog fog) {
+        this.fog = fog;
+    }
+
+    public void dissipateFog() throws InvalidActionException {
+        fog.dissipate();
+    }
     
     public void addPlant(Plant plant) {
         plants.add(plant);
+    }
+
+    public Map<String, Integer> countPlantsByColor() {
+        Map<String, Integer> colorCount = new HashMap<>();
+        for (Plant plant : plants) {
+            String color = String.valueOf(plant.getColor());
+            colorCount.put(color, colorCount.getOrDefault(color, 0) + 1);
+        }
+        return colorCount;
+    }
+
+    public String getDominantColor() {
+        Map<String, Integer> colorCount = countPlantsByColor();
+        String dominantColor = null;
+        int maxCount = 0;
+        for (Map.Entry<String, Integer> entry : colorCount.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                maxCount = entry.getValue();
+                dominantColor = entry.getKey();
+            }
+        }
+        return dominantColor;
+    }
+
+    public boolean hasMajorityBrittlePlants() {
+        int brittleCount = 0;
+        for (Plant plant : plants) {
+            if (plant.isBrittle()) {
+                brittleCount++;
+            }
+        }
+        return !plants.isEmpty() && brittleCount > plants.size() / 2;
+    }
+
+    public int getPlantCount() {
+        return plants.size();
     }
     
     public Plant getPlantAt(Location loc) throws PlantNotFoundException {
@@ -29,7 +76,7 @@ public class Ground {
                 return plant;
             }
         }
-        throw new PlantNotFoundException("No plant found at location " + loc);
+        throw new PlantNotFoundException("Скуперфильд начал вырывать фантомные растения (" + loc + ")");
     }
     
     public boolean isDifficultToMove() {
@@ -39,15 +86,7 @@ public class Ground {
     public GroundType getType() {
         return type;
     }
-    
-    public void setFog(Fog fog) {
-        this.fog = fog;
-    }
-    
-    public Fog getFog() {
-        return fog;
-    }
-    
+
     public List<Plant> getPlants() {
         return new ArrayList<>(plants);
     }

@@ -52,4 +52,3 @@ public class Inventory {
         return Objects.hash(maxCapacity, items);
     }
 }
-

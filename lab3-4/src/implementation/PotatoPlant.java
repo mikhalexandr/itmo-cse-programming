@@ -9,12 +9,10 @@ import java.util.Objects;
 
 public class PotatoPlant extends Plant {
     private final List<PotatoTuber> tubers;
-    private final boolean isBrittle;
     
-    public PotatoPlant(Location loc) {
-        super("PotatoPlant", PlantColor.DARK_GREEN, loc);
+    public PotatoPlant(Location loc, PlantColor color, boolean isBrittle) {
+        super("PotatoPlant", color, loc, isBrittle);
         this.tubers = new ArrayList<>();
-        this.isBrittle = true;
 
         for (int i = 0; i < 5; i++) {
             tubers.add(new PotatoTuber(0.1 + i * 0.05));
@@ -27,10 +25,6 @@ public class PotatoPlant extends Plant {
     
     public void removeTuber(PotatoTuber tuber) {
         tubers.remove(tuber);
-    }
-    
-    public boolean isBrittle() {
-        return isBrittle;
     }
     
     @Override

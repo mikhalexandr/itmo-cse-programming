@@ -1,72 +1,58 @@
 import data_types.GroundType;
 import data_types.Location;
+import data_types.PlantColor;
 import exceptions.DisgustingTasteException;
 import exceptions.InvalidActionException;
 import exceptions.PlantNotFoundException;
 import implementation.*;
+
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("=== Начало истории ===");
-        
-        // Создаем туман
-        Fog fog = new Fog(true);
-        System.out.println("Туман создан: " + fog);
-        
-        // Туман рассеивается
-        System.out.println("\nВскоре туман рассеялся...");
-        fog.dissipate();
-        System.out.println("Туман после рассеивания: " + fog);
-        
-        // Создаем землю
+    public static void main(String[] args) throws PlantNotFoundException {
         Ground ground = new Ground(GroundType.LOOSE);
+
+        Fog fog = new Fog();
         ground.setFog(fog);
-        System.out.println("\nЗемля создана: " + ground);
-        
-        // Создаем Скуперфильда
+
+        try {
+            ground.dissipateFog();
+        } catch (InvalidActionException e) {
+            System.out.println(e.getMessage());
+        }
+
+        Location plantLoc1 = new Location(1, 0);
+        Location plantLoc2 = new Location(0, 1);
+        Location plantLoc3 = new Location(1, 1);
+        PotatoPlant potatoPlant1 = new PotatoPlant(plantLoc1, PlantColor.DARK_GREEN, true);
+        PotatoPlant potatoPlant2 = new PotatoPlant(plantLoc2, PlantColor.DARK_GREEN, true);
+        PotatoPlant potatoPlant3 = new PotatoPlant(plantLoc3, PlantColor.DARK_GREEN, true);
+        ground.addPlant(potatoPlant1);
+        ground.addPlant(potatoPlant2);
+        ground.addPlant(potatoPlant3);
+
         Location startLoc = new Location(0, 0);
         Skuperfield skuperfield = new Skuperfield(startLoc);
-        System.out.println("Скуперфильд создан: " + skuperfield);
-        
-        // Скуперфильд шагает по рыхлой земле
-        System.out.println("\n...Скуперфильд обнаружил, что шагает по рыхлой земле...");
 
-        
-        // Создаем картофельное растение
-        Location plantLoc = new Location(1, 0);
-        PotatoPlant potatoPlant = new PotatoPlant(plantLoc);
-        ground.addPlant(potatoPlant);
-        System.out.println("\n...усаженной какими-то темно-зелеными, ломкими кустиками...");
-        System.out.println("Картофельное растение создано: " + potatoPlant);
-        System.out.println("Цвет: " + potatoPlant.getColor() + ", ломкое: " + potatoPlant.isBrittle());
-        
-        // Скуперфильд выдергивает растение
-        System.out.println("\nВыдернув из земли один кустик...");
-        skuperfield.setLocation(plantLoc);
+        skuperfield.move(ground);
+
         try {
             skuperfield.uprootPlant(ground);
-            System.out.println("Растение выдернуто. isUprooted: " + potatoPlant.isUprooted());
-        } catch (PlantNotFoundException | InvalidActionException e) {
-            System.out.println("Ошибка при выдергивании: " + e.getMessage());
+        } catch (InvalidActionException | PlantNotFoundException e) {
+            System.out.println(e.getMessage());
         }
-        
-        // Скуперфильд видит клубни
-        System.out.println("\n...он увидел несколько прицепившихся к корням желтоватых клубней.");
-        List<PotatoTuber> tubers = potatoPlant.getTubers();
-        System.out.println("Количество клубней: " + tubers.size());
-        
-        // Осматривает клубни
-        System.out.println("\nОсмотрев клубни внимательно...");
-        String examination = potatoPlant.examine();
-        System.out.println("Результат осмотра: " + examination);
-        
-        // Скуперфильд понимает правду о картофеле
-        System.out.println("\n...Скуперфильд начал догадываться... к тому же почему-то воображал, что картофель растет на деревьях.");
-        System.out.println("До осознания: hasPotatoMisconception = " + skuperfield.hasPotatoMisconception());
+
+        Location currLoc = skuperfield.getCurrentLocation();
+        PotatoPlant plant = (PotatoPlant) ground.getPlantAt(currLoc);
+
+        List<PotatoTuber> tubers = plant.getTubers();
+        if (!tubers.isEmpty()) {
+            System.out.println("он увидел несколько прицепившихся к корням желтоватых клубней.");
+        }
+
+        String examination = plant.examine();
         skuperfield.realizePotatoGrowInGround();
-        System.out.println("После осознания: hasPotatoMisconception = " + skuperfield.hasPotatoMisconception());
-        
+
         // Скуперфильд пытается съесть сырой картофель
         System.out.println("\n...откусил кусочек... Сырой картофель показался ему страшно невкусным...");
         if (!tubers.isEmpty()) {
@@ -78,7 +64,7 @@ public class Main {
                 System.out.println("Скуперфильд выплюнул кусок: " + e.getMessage());
             }
         }
-        
+
         // Скуперфильд кладет картофель в карман
         System.out.println("\n...сунул вытащенные из земли полдесятка картофелин в карман пиджака...");
         int count = Math.min(5, tubers.size());
@@ -92,22 +78,10 @@ public class Main {
                 System.out.println("Ошибка при добавлении клубня: " + e.getMessage());
             }
         }
-        // Обновляем список после удаления
+
         tubers = potatoPlant.getTubers();
         System.out.println("Инвентарь: " + skuperfield.getInventory());
-        
-        // Скуперфильд снова шагает и проклинает
-        System.out.println("\nШагать по рыхлой земле... было очень утомительно. Скуперфильд на все лады проклинал коротышек...");
-        try {
-            skuperfield.move(ground);
-            System.out.println("Настроение после движения: " + skuperfield.getMood());
-        } catch (InvalidActionException e) {
-            System.out.println("Ошибка при движении: " + e.getMessage());
-        }
-        
-        skuperfield.curse("Коротышки виноваты!");
-        System.out.println("Настроение после проклятия: " + skuperfield.getMood());
-        
-        System.out.println("\n=== Конец истории ===");
+
+        skuperfield.move(ground);
     }
 }

@@ -10,13 +10,15 @@ public abstract class Plant implements Examinable, Uprootable {
     protected String species;
     protected PlantColor color;
     protected boolean isUprooted;
+    protected boolean isBrittle;
     protected Location location;
     
-    public Plant(String species, PlantColor color, Location loc) {
+    public Plant(String species, PlantColor color, Location loc,  boolean isBrittle) {
         this.species = species;
         this.color = color;
         this.location = loc;
         this.isUprooted = false;
+        this.isBrittle = isBrittle;
     }
     
     public abstract boolean hasFruit();
@@ -37,6 +39,10 @@ public abstract class Plant implements Examinable, Uprootable {
     @Override
     public boolean isUprooted() {
         return isUprooted;
+    }
+
+    public boolean isBrittle() {
+        return isBrittle;
     }
     
     @Override
