@@ -30,15 +30,11 @@ end legend
 ' ============================================
 package "Interfaces"{
     interface Edible {
-        + getTaste(isCooked: boolean): Taste
-        + isEdibleRaw(): boolean
+        + getTaste(): Taste
     }
     interface Cleanable {
         + clean(): void
         + isClean(): boolean
-    }
-    interface Examinable {
-        + examine(): String
     }
     interface Uprootable {
         + uproot(): void
@@ -54,7 +50,6 @@ package "Data Types" {
         NORMAL
         ANGRY
         TIRED
-        HAPPY
     }
 
     enum GroundType {
@@ -110,6 +105,7 @@ package "Base Classes" {
         # name: String
         # weight: double
         + Item(name: String, weight: double)
+        + getName(): String
         + toString(): String
         + equals(o: Object): boolean
         + hashCode(): int
@@ -119,10 +115,13 @@ package "Base Classes" {
         # species: String
         # color: PlantColor
         # isUprooted: boolean
+        # isBrittle: boolean
         # location: Location
-        + Plant(species: String, color: PlantColor, loc: Location)
+        + Plant(species: String, color: PlantColor, loc: Location, isBrittle: boolean)
         + {abstract} hasFruit(): boolean
         + getLocation(): Location
+        + getColor(): PlantColor
+        + isBrittle(): boolean
         + toString(): String
         + equals(o: Object): boolean
         + hashCode(): int
@@ -132,9 +131,13 @@ package "Base Classes" {
         # name: String
         # mood: Mood
         # currentLocation: Location
+        # inventory: Inventory
         + Character(name: String, startLoc: Location)
-        + {abstract} move(ground: Ground): void
+        + {abstract} move(ground: Ground): String
         + setLocation(loc: Location): void
+        + getMood(): Mood
+        + getInventory(): Inventory
+        + getCurrentLocation(): Location
         + toString(): String
         + equals(o: Object): boolean
         + hashCode(): int
@@ -149,7 +152,7 @@ package "Implementation" {
         - isCooked: boolean
         - isClean: boolean
         + PotatoTuber(weight: double)
-        + setCooked(cooked: boolean): void
+        + isCooked(): boolean
         + toString(): String
         + equals(o: Object): boolean
         + hashCode(): int
@@ -158,19 +161,24 @@ package "Implementation" {
     class PotatoPlant {
         - tubers: List<PotatoTuber>
         - isBrittle: boolean
-        + PotatoPlant(loc: Location)
+        + PotatoPlant(loc: Location, color: PlantColor, isBrittle: boolean)
         + getTubers(): List<PotatoTuber>
+        + removeTuber(tuber: PotatoTuber): void
+        + hasFruit(): boolean
         + toString(): String
         + equals(o: Object): boolean
         + hashCode(): int
     }
 
     class Skuperfield {
-        - hasPotatoMisconception: boolean
+        - hasPotatoUncertainty: boolean
         + Skuperfield(startLoc: Location)
-        + uprootPlant(ground: Ground): void
-        + realizePotatoGrowInGround(): void
-        + curse(reason: String): void
+        + move(ground: Ground): String
+        + uprootPlant(ground: Ground): String
+        + examine(ground: Ground): String
+        + realizePotatoGrowInGround(ground: Ground): String
+        + tryToEat(ground: Ground): String
+        + putInPocket(ground: Ground, amount: int): String
         + toString(): String
         + equals(o: Object): boolean
         + hashCode(): int
@@ -178,8 +186,12 @@ package "Implementation" {
 
     class Inventory {
         - maxCapacity: int
+        - items: List<Item>
         + Inventory(capacity: int)
         + addItem(item: Item): void
+        + getItems(): List<Item>
+        + getSize(): int
+        + getMaxCapacity(): int
         + toString(): String
         + equals(o: Object): boolean
         + hashCode(): int
@@ -187,10 +199,19 @@ package "Implementation" {
 
     class Ground {
         - type: GroundType
+        - plants: List<Plant>
+        - fog: Fog
         + Ground(type: GroundType)
+        + setFog(fog: Fog): void
         + addPlant(plant: Plant): void
         + getPlantAt(loc: Location): Plant
+        + dissipateFog(): String
+        + getDominantColor(): String
+        + hasMajorityBrittlePlants(): boolean
+        + getPlantCount(): int
         + isDifficultToMove(): boolean
+        + getType(): GroundType
+        + getPlants(): List<Plant>
         + toString(): String
         + equals(o: Object): boolean
         + hashCode(): int
@@ -198,8 +219,8 @@ package "Implementation" {
 
     class Fog {
         - isDense: boolean
-        + Fog(isDense: boolean)
-        + dissipate(): void
+        + Fog()
+        + dissipate(): String
         + toString(): String
         + equals(o: Object): boolean
         + hashCode(): int
@@ -218,7 +239,6 @@ Skuperfield -up-|> Character
 ' Interfaces
 PotatoTuber .up.|> Edible
 PotatoTuber .up.|> Cleanable
-Plant .up.|> Examinable
 Plant .up.|> Uprootable
 
 ' Composition and Usage
@@ -233,10 +253,16 @@ Plant o-up- Location
 
 ' Error Dependencies (Arrows down to Exceptions package)
 Skuperfield .down.> PlantNotFoundException
+Skuperfield .down.> DisgustingTasteException
+Skuperfield .down.> InventoryFullException
 Character .down.> InvalidActionException
-Character .down.> DisgustingTasteException
+Ground .down.> InvalidActionException
+Ground .down.> PlantNotFoundException
+Fog .down.> InvalidActionException
 Inventory .down.> InventoryFullException
-Character .right.> Ground
+
+' Usage dependencies
+Skuperfield .right.> Ground
 
 ' Hidden links for package alignment
 Item -[hidden]right- Plant
