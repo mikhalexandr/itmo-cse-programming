@@ -48,7 +48,7 @@ public class Main {
             System.out.println(e.getMessage());
         }
         assert plant != null;
-        PotatoTuber tuber = plant.getTubers().get(0);
+        PotatoTuber tuber = null;
         try {
             tuber = (PotatoTuber) skuperfield.examine(plant);
             skuperfield.realizePotatoGrowInGround(tuber);
