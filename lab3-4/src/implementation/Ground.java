@@ -23,11 +23,11 @@ public class Ground {
         this.fog = fog;
     }
 
-    public String dissipateFog() throws InvalidActionException {
+    public void dissipateFog() throws InvalidActionException {
         if (fog == null) {
             throw new InvalidActionException("На этой земле нет тумана!");
         }
-        return fog.dissipate();
+        fog.dissipate();
     }
     
     public void addPlant(Plant plant) {

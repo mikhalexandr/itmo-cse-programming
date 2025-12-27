@@ -1,6 +1,8 @@
 package implementation;
 
 import base_classes.Character;
+import base_classes.Item;
+import base_classes.Plant;
 import data_types.Location;
 import data_types.Mood;
 import data_types.PlantColor;
@@ -23,7 +25,7 @@ public class Skuperfield extends Character {
     }
     
     @Override
-    public String move(Ground ground) throws InvalidActionException {
+    public void move(Ground ground) throws InvalidActionException {
         String text;
         if (ground.isDifficultToMove()) {
             switch (this.getMood()) {
@@ -72,7 +74,7 @@ public class Skuperfield extends Character {
         }
         this.setLocation(new Location(currentLocation.x() + dx, currentLocation.y() + dy));
 
-        return text;
+        System.out.println(text);
     }
 
     private String curse(Ground ground) {
@@ -83,7 +85,7 @@ public class Skuperfield extends Character {
         return text;
     }
     
-    public String uprootPlant(Ground ground) throws InvalidActionException, PlantNotFoundException {
+    public Plant uprootPlant(Ground ground) throws InvalidActionException, PlantNotFoundException {
         PotatoPlant plant = (PotatoPlant) ground.getPlantAt(currentLocation);
         if (plant.isUprooted()) {
             throw new InvalidActionException("Кустик уже вырван!");
@@ -95,48 +97,44 @@ public class Skuperfield extends Character {
         } else {
             text += ", он ничего не обнаружил. ";
         }
-        return text;
+        System.out.println(text);
+        return plant;
     }
 
-    public String examine(Ground ground) throws PlantNotFoundException {
-        PotatoPlant plant = (PotatoPlant) ground.getPlantAt(currentLocation);
-        List<PotatoTuber> tubers = plant.getTubers();
-        if (tubers.isEmpty()) {
-            return "Осмотрев внимательно, Скуперфильд ничего не обнаружил. ";
+    public Item examine(Plant plant) throws PlantNotFoundException {
+        PotatoTuber tuber = null;
+        if (plant instanceof PotatoPlant) {
+            List<PotatoTuber> tubers = plant.getTubers();
+            if (tubers.isEmpty()) {
+                System.out.println("Осмотрев внимательно, Скуперфильд ничего не обнаружил.");
+            }
+            tuber = tubers.get(0);
+            System.out.printf(
+                    "Осмотрев клубни внимательно, Скуперфильд начал догадываться, что перед ним самый обыкновенный %s.",
+                    tuber.getName()
+            );
+        } else {
+            System.out.printf(
+                    "Осмотрев растение внимательно, Скуперфильд начал догадываться, что перед ним самый обыкновенный %s. %n",
+                    plant.getName()
+            );
         }
-        PotatoTuber tuber = tubers.get(0);
-        return String.format(
-                "Осмотрев клубни внимательно, Скуперфильд начал догадываться, что перед ним самый обыкновенный %s. ",
-                tuber.getName()
-        );
+        return tuber;
     }
     
-    public String realizePotatoGrowInGround(Ground ground) throws PlantNotFoundException {
+    public void realizePotatoGrowInGround(PotatoTuber tuber) throws PlantNotFoundException {
         this.hasPotatoUncertainty = true;
 
-        PotatoPlant plant = (PotatoPlant) ground.getPlantAt(currentLocation);
-        List<PotatoTuber> tubers = plant.getTubers();
-        if (tubers.isEmpty()) {
-            return "Впрочем, он не был уверен в своей догадке. ";
-        }
-        String tuberName = tubers.get(0).getName();
+        String tuberName = tuber.getName();
 
-        return String.format(
+        System.out.printf(
                 "Впрочем, он не был уверен в своей догадке, так как до этого видел %s только в жареном или вареном " +
                 "виде и к тому же почему-то воображал, что картофель растёт на деревьях. ",
                 tuberName
         );
     }
     
-    public String tryToEat(Ground ground) throws PlantNotFoundException, DisgustingTasteException {
-        PotatoPlant plant = (PotatoPlant) ground.getPlantAt(currentLocation);
-        List<PotatoTuber> tubers = plant.getTubers();
-        
-        if (tubers.isEmpty()) {
-            throw new PlantNotFoundException("Нет ни одного клубня!");
-        }
-        
-        PotatoTuber tuber = tubers.get(0);
+    public void tryToEat(PotatoTuber tuber) throws PlantNotFoundException, DisgustingTasteException {
         String text = "";
         
         if (!tuber.isClean()) {
@@ -151,13 +149,11 @@ public class Skuperfield extends Character {
             throw new DisgustingTasteException(text + "Сырой картофель показался ему страшно невкусным, даже противным. ");
         }
         
-        return text + "Картошечка показалась ему вкусной. ";
+        System.out.println(text + "Картошечка показалась ему вкусной. ");
     }
 
-    public String putInPocket(Ground ground, int amount) throws PlantNotFoundException, InventoryFullException {
-        PotatoPlant plant = (PotatoPlant) ground.getPlantAt(currentLocation);
+    public void putInPocket(PotatoPlant plant, int amount) throws PlantNotFoundException, InventoryFullException {
         List<PotatoTuber> tubers = plant.getTubers();
-        
         if (tubers.isEmpty()) {
             throw new PlantNotFoundException("Нет клубней для сбора!");
         }
@@ -176,7 +172,7 @@ public class Skuperfield extends Character {
             }
         }
         
-        return String.format("Сообразив, однако, что никто не стал бы выращивать совершенно бесполезных плодов, " +
+        System.out.printf("Сообразив, однако, что никто не стал бы выращивать совершенно бесполезных плодов, " +
                 "он сунул вытащенные из земли %d картофелин в карман пиджака и отправился дальше. ",
                 collected
         );

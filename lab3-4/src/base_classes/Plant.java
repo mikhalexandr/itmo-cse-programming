@@ -2,8 +2,10 @@ package base_classes;
 
 import data_types.Location;
 import data_types.PlantColor;
+import implementation.PotatoTuber;
 import interfaces.Uprootable;
 
+import java.util.List;
 import java.util.Objects;
 
 public abstract class Plant implements Uprootable {
@@ -29,6 +31,10 @@ public abstract class Plant implements Uprootable {
     
     public PlantColor getColor() {
         return color;
+    }
+
+    public String getName() {
+        return species;
     }
     
     @Override
@@ -65,4 +71,6 @@ public abstract class Plant implements Uprootable {
     public int hashCode() {
         return Objects.hash(species, color, isUprooted, location);
     }
+
+    public abstract List<PotatoTuber> getTubers();
 }

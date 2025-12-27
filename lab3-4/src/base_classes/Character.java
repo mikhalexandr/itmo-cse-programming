@@ -21,7 +21,7 @@ public abstract class Character {
         this.inventory = new Inventory(20);
     }
     
-    public abstract String move(Ground ground) throws InvalidActionException;
+    public abstract void move(Ground ground) throws InvalidActionException;
     
     public void setLocation(Location loc) {
         this.currentLocation = loc;

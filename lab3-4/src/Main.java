@@ -1,3 +1,4 @@
+import base_classes.Plant;
 import data_types.GroundType;
 import data_types.Location;
 import data_types.PlantColor;
@@ -5,25 +6,22 @@ import exceptions.DisgustingTasteException;
 import exceptions.InvalidActionException;
 import exceptions.InventoryFullException;
 import exceptions.PlantNotFoundException;
-import implementation.Fog;
-import implementation.Ground;
-import implementation.PotatoPlant;
-import implementation.Skuperfield;
+import implementation.*;
+
+import java.util.List;
 
 
 public class Main {
     public static void main(String[] args) {
-        StringBuilder output = new StringBuilder();
-        
         Ground ground = new Ground(GroundType.LOOSE);
 
         Fog fog = new Fog();
         ground.setFog(fog);
 
         try {
-            output.append(ground.dissipateFog());
+            ground.dissipateFog();
         } catch (InvalidActionException e) {
-            output.append(e.getMessage());
+            System.out.println(e.getMessage());
         }
 
         Location plantLoc1 = new Location(1, 0);
@@ -40,46 +38,44 @@ public class Main {
         Skuperfield skuperfield = new Skuperfield(startLoc);
 
         try {
-            output.append(skuperfield.move(ground));
+            skuperfield.move(ground);
         } catch (InvalidActionException e) {
-            output.append(e.getMessage());
+            System.out.println(e.getMessage());
         }
 
+        Plant plant = null;
         try {
-            output.append(skuperfield.uprootPlant(ground));
+            plant = skuperfield.uprootPlant(ground);
         } catch (InvalidActionException | PlantNotFoundException e) {
-            output.append(e.getMessage());
+            System.out.println(e.getMessage());
         }
-
+        assert plant != null;
+        List<PotatoTuber> tubers = plant.getTubers();
+        PotatoTuber tuber = tubers.get(0);
         try {
-            output.append(skuperfield.examine(ground));
-            output.append(skuperfield.realizePotatoGrowInGround(ground));
+            tuber = (PotatoTuber) skuperfield.examine(plant);
+            skuperfield.realizePotatoGrowInGround(tuber);
         } catch (PlantNotFoundException e) {
-            output.append(e.getMessage());
+            System.out.println(e.getMessage());
         }
 
         try {
-            output.append(skuperfield.tryToEat(ground));
+            assert tuber != null;
+            skuperfield.tryToEat(tuber);
         } catch (PlantNotFoundException | DisgustingTasteException e) {
-            output.append(e.getMessage());
+            System.out.println(e.getMessage());
         }
 
         try {
-            output.append(skuperfield.putInPocket(ground, 5));
+            skuperfield.putInPocket((PotatoPlant) plant, 5);
         } catch (PlantNotFoundException | InventoryFullException e) {
-            output.append(e.getMessage());
+            System.out.println(e.getMessage());
         }
 
         try {
-            output.append(skuperfield.move(ground));
+            skuperfield.move(ground);
         } catch (InvalidActionException e) {
-            output.append(e.getMessage());
-        }
-        
-        String s = output.toString();
-        int max = 125;
-        for (int i = 0; i < s.length(); i += max) {
-            System.out.println(s.substring(i, Math.min(i + max, s.length())));
+            System.out.println(e.getMessage());
         }
     }
 }
