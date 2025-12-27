@@ -8,8 +8,6 @@ import exceptions.InventoryFullException;
 import exceptions.PlantNotFoundException;
 import implementation.*;
 
-import java.util.List;
-
 
 public class Main {
     public static void main(String[] args) {
@@ -50,8 +48,7 @@ public class Main {
             System.out.println(e.getMessage());
         }
         assert plant != null;
-        List<PotatoTuber> tubers = plant.getTubers();
-        PotatoTuber tuber = tubers.get(0);
+        PotatoTuber tuber = plant.getTubers().get(0);
         try {
             tuber = (PotatoTuber) skuperfield.examine(plant);
             skuperfield.realizePotatoGrowInGround(tuber);
