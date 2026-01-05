@@ -1,4 +1,4 @@
-package implementation;
+package model;
 
 import exceptions.InvalidActionException;
 

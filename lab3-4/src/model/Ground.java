@@ -1,10 +1,9 @@
-package implementation;
+package model;
 
-import base_classes.Plant;
-import data_types.GroundType;
-import data_types.Location;
 import exceptions.InvalidActionException;
 import exceptions.PlantNotFoundException;
+import types.GroundType;
+import types.Location;
 
 import java.util.*;
 
@@ -14,7 +13,7 @@ public class Ground {
     private Fog fog;
     
     public Ground(GroundType type) {
-        this.type = Objects.requireNonNull(type, "Ground type cannot be null");
+        this.type = Objects.requireNonNull(type, "Ground type не может быть null!");
         this.plants = new ArrayList<>();
         this.fog = null;
     }
@@ -25,13 +24,13 @@ public class Ground {
 
     public void dissipateFog() throws InvalidActionException {
         if (fog == null) {
-            throw new InvalidActionException("На этой земле нет тумана!");
+            throw new InvalidActionException("Туман оказался фантомным...");
         }
         fog.dissipate();
     }
     
     public void addPlant(Plant plant) {
-        plants.add(Objects.requireNonNull(plant, "Plant cannot be null"));
+        plants.add(Objects.requireNonNull(plant, "Plant не может быть null!"));
     }
 
     public String getDominantColor() {
@@ -64,7 +63,7 @@ public class Ground {
     }
     
     public Plant getPlantAt(Location loc) throws PlantNotFoundException {
-        Objects.requireNonNull(loc, "Location cannot be null");
+        Objects.requireNonNull(loc, "Location не может быть null!");
         
         return plants.stream()
                 .filter(plant -> loc.equals(plant.getLocation()))

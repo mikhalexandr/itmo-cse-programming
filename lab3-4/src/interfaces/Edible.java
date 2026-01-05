@@ -1,6 +1,6 @@
 package interfaces;
 
-import data_types.Taste;
+import types.Taste;
 
 public interface Edible {
     Taste getTaste();

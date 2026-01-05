@@ -1,9 +1,8 @@
-package implementation;
+package model;
 
-import base_classes.Item;
-import data_types.Taste;
 import interfaces.Cleanable;
 import interfaces.Edible;
+import types.Taste;
 
 import java.util.Objects;
 

@@ -1,10 +1,8 @@
-package base_classes;
+package model;
 
-import data_types.Location;
-import data_types.Mood;
 import exceptions.InvalidActionException;
-import implementation.Ground;
-import implementation.Inventory;
+import types.Location;
+import types.Mood;
 
 import java.util.Objects;
 
@@ -18,7 +16,7 @@ public abstract class Character {
         this.name = name;
         this.mood = Mood.NORMAL;
         this.currentLocation = startLoc;
-        this.inventory = new Inventory(20);
+        this.inventory = new Inventory(10);
     }
     
     public abstract void move(Ground ground) throws InvalidActionException;

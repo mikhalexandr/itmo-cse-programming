@@ -1,7 +1,7 @@
-package data_types;
+package types;
 
 public enum Mood {
     NORMAL,
     ANGRY,
-    TIRED,
+    TIRED
 }

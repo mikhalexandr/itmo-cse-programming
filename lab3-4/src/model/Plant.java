@@ -1,9 +1,8 @@
-package base_classes;
+package model;
 
-import data_types.Location;
-import data_types.PlantColor;
-import implementation.PotatoTuber;
 import interfaces.Uprootable;
+import types.Location;
+import types.PlantColor;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +23,10 @@ public abstract class Plant implements Uprootable {
     }
     
     public abstract boolean hasFruit();
+
+    public abstract List<Item> harvest(int amount);
+
+    public abstract Item getSampleItem();
     
     public Location getLocation() {
         return location;
@@ -36,6 +39,10 @@ public abstract class Plant implements Uprootable {
     public String getName() {
         return species;
     }
+
+    public boolean isBrittle() {
+        return isBrittle;
+    }
     
     @Override
     public void uproot() {
@@ -45,10 +52,6 @@ public abstract class Plant implements Uprootable {
     @Override
     public boolean isUprooted() {
         return isUprooted;
-    }
-
-    public boolean isBrittle() {
-        return isBrittle;
     }
     
     @Override
@@ -71,6 +74,4 @@ public abstract class Plant implements Uprootable {
     public int hashCode() {
         return Objects.hash(species, color, isUprooted, location);
     }
-
-    public abstract List<PotatoTuber> getTubers();
 }

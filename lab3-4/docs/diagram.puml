@@ -28,7 +28,7 @@ end legend
 ' ============================================
 ' 2. INTERFACES
 ' ============================================
-package "Interfaces"{
+package "interfaces" {
     interface Edible {
         + getTaste(): Taste
     }
@@ -43,9 +43,9 @@ package "Interfaces"{
 }
 
 ' ============================================
-' 3. DATA TYPES (Enums & Records)
+' 3. TYPES (Enums & Records)
 ' ============================================
-package "Data Types" {
+package "types" {
     enum Mood {
         NORMAL
         ANGRY
@@ -78,7 +78,7 @@ package "Data Types" {
 ' ============================================
 ' 4. EXCEPTIONS
 ' ============================================
-package "Exceptions" {
+package "exceptions" {
     exception PlantNotFoundException {
         + PlantNotFoundException(msg: String)
         + getMessage(): String
@@ -98,9 +98,11 @@ package "Exceptions" {
 }
 
 ' ============================================
-' 5. ABSTRACTIONS
+' 5. MODEL (Combined Base Classes & Implementation)
 ' ============================================
-package "Base Classes" {
+package "model" {
+
+    ' --- Base Classes (Abstract) ---
     abstract class Item {
         # name: String
         # weight: double
@@ -142,12 +144,8 @@ package "Base Classes" {
         + equals(o: Object): boolean
         + hashCode(): int
     }
-}
 
-' ============================================
-' 6. IMPLEMENTATION AND ENVIRONMENT
-' ============================================
-package "Implementation" {
+    ' --- Implementation Classes ---
     class PotatoTuber {
         - isCooked: boolean
         - isClean: boolean
@@ -247,7 +245,7 @@ Character *-- Inventory
 Ground o-- Fog
 Ground o-- Plant
 
-' Links to Data Types
+' Links to Types
 Character o-up- Location
 Plant o-up- Location
 

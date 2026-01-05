@@ -1,8 +1,7 @@
-package implementation;
+package model;
 
-import base_classes.Plant;
-import data_types.Location;
-import data_types.PlantColor;
+import types.Location;
+import types.PlantColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,18 +20,32 @@ public class PotatoPlant extends Plant {
             tubers.add(new PotatoTuber(0.1 + i * 0.05));
         }
     }
-    
-    public List<PotatoTuber> getTubers() {
-        return new ArrayList<>(tubers);
-    }
-    
-    public void removeTuber(PotatoTuber tuber) {
-        tubers.remove(tuber);
-    }
-    
+
     @Override
     public boolean hasFruit() {
         return !tubers.isEmpty();
+    }
+
+    @Override
+    public List<Item> harvest(int amount) {
+        List<Item> harvestedItems = new ArrayList<>();
+
+        int countToTake = Math.min(amount, tubers.size());
+
+        for (int i = 0; i < countToTake; i++) {
+            PotatoTuber tuber = tubers.remove(0);
+            harvestedItems.add(tuber);
+        }
+
+        return harvestedItems;
+    }
+
+    @Override
+    public Item getSampleItem() {
+        if (!tubers.isEmpty()) {
+            return tubers.get(0);
+        }
+        return null;
     }
     
     @Override

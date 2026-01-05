@@ -1,78 +1,66 @@
-import base_classes.Plant;
-import data_types.GroundType;
-import data_types.Location;
-import data_types.PlantColor;
-import exceptions.DisgustingTasteException;
-import exceptions.InvalidActionException;
-import exceptions.InventoryFullException;
-import exceptions.PlantNotFoundException;
-import implementation.*;
+import exceptions.*;
+import model.*;
+import types.*;
 
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        // 1. НАСТРОЙКА МИРА
         Ground ground = new Ground(GroundType.LOOSE);
+        ground.setFog(new Fog());
 
-        Fog fog = new Fog();
-        ground.setFog(fog);
+        ground.addPlant(new PotatoPlant(new Location(1, 0), PlantColor.DARK_GREEN, true));
+        ground.addPlant(new PotatoPlant(new Location(0, 1), PlantColor.DARK_GREEN, true));
+        ground.addPlant(new PotatoPlant(new Location(1, 1), PlantColor.DARK_GREEN, true));
 
+        Skuperfield skuperfield = new Skuperfield(new Location(0, 0));
+
+        // 2. СЦЕНАРИЙ
         try {
-            ground.dissipateFog();
-        } catch (InvalidActionException e) {
-            System.out.println(e.getMessage());
-        }
+            try {
+                ground.dissipateFog();
+            } catch (InvalidActionException e) {
+                System.out.println(e.getMessage());
+            }
 
-        Location plantLoc1 = new Location(1, 0);
-        Location plantLoc2 = new Location(0, 1);
-        Location plantLoc3 = new Location(1, 1);
-        PotatoPlant potatoPlant1 = new PotatoPlant(plantLoc1, PlantColor.DARK_GREEN, true);
-        PotatoPlant potatoPlant2 = new PotatoPlant(plantLoc2, PlantColor.DARK_GREEN, true);
-        PotatoPlant potatoPlant3 = new PotatoPlant(plantLoc3, PlantColor.DARK_GREEN, true);
-        ground.addPlant(potatoPlant1);
-        ground.addPlant(potatoPlant2);
-        ground.addPlant(potatoPlant3);
-
-        Location startLoc = new Location(0, 0);
-        Skuperfield skuperfield = new Skuperfield(startLoc);
-
-        try {
             skuperfield.move(ground);
-        } catch (InvalidActionException e) {
-            System.out.println(e.getMessage());
-        }
 
-        Plant plant = null;
-        try {
-            plant = skuperfield.uprootPlant(ground);
-        } catch (InvalidActionException | PlantNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
-        assert plant != null;
-        PotatoTuber tuber = null;
-        try {
-            tuber = (PotatoTuber) skuperfield.examine(plant);
-            skuperfield.realizePotatoGrowInGround(tuber);
-        } catch (PlantNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
+            Plant plant = skuperfield.uprootPlant(ground);
 
-        try {
-            assert tuber != null;
-            skuperfield.tryToEat(tuber);
-        } catch (PlantNotFoundException | DisgustingTasteException e) {
-            System.out.println(e.getMessage());
-        }
+            Item sampleItem = skuperfield.examine(plant);
 
-        try {
-            skuperfield.putInPocket((PotatoPlant) plant, 5);
-        } catch (PlantNotFoundException | InventoryFullException e) {
-            System.out.println(e.getMessage());
-        }
+            if (sampleItem != null) {
+                skuperfield.realizeItemGrowInGround(sampleItem);
 
-        try {
+                try {
+                    skuperfield.tryToEat(sampleItem);
+                } catch (DisgustingTasteException e) {
+                    System.out.println(e.getMessage());
+                }
+
+                List<Item> loot = plant.harvest(5);
+
+                if (!loot.isEmpty()) {
+                    try {
+                        skuperfield.putInPocket(loot);
+                    } catch (InventoryFullException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    System.out.println("Наш герой отправился дальше.");
+                } else {
+                    System.out.println("На корнях ничего не осталось. Наш герой, расстроенный этим, отправился дальше.");
+                }
+            } else {
+                System.out.println("Наш герой выбросил бесполезное растение.");
+            }
+
             skuperfield.move(ground);
-        } catch (InvalidActionException e) {
-            System.out.println(e.getMessage());
+
+        } catch (PlantNotFoundException | InvalidActionException e) {
+            System.out.println("История прерывается: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Непредвиденная ошибка: " + e.getMessage());
         }
     }
 }

@@ -1,6 +1,5 @@
-package implementation;
+package model;
 
-import base_classes.Item;
 import exceptions.InventoryFullException;
 
 import java.util.ArrayList;

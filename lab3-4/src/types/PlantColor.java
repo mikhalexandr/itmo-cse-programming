@@ -1,4 +1,4 @@
-package data_types;
+package types;
 
 public enum PlantColor {
     DARK_GREEN,
