@@ -51,7 +51,7 @@ public class Skuperfield extends Character {
                 }
                 case TIRED  -> {
                     this.setMood(Mood.ANGRY);
-                    text = "Шагать по рыхлой земле, беспрерывно путаясь ногами в картофельной ботве, было очень утомительно. ";
+                    text = "Шагать по рыхлой земле, беспрерывно путаясь ногами в надоедливых кустиках, было очень утомительно. ";
                     text += this.curse(ground);
                 }
                 case ANGRY -> text = "Скуперфильд, уставший от шагания по рыхлой земле, начал ругаться матом. ";
@@ -187,7 +187,7 @@ public class Skuperfield extends Character {
 
     @Override
     public String toString() {
-        return super.toString() + " (hasPotatoMisconception: " + hasItemUncertainty + ")";
+        return super.toString() + " (hasItemUncertainty: " + hasItemUncertainty + ")";
     }
 
     @Override
