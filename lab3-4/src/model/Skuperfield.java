@@ -102,7 +102,7 @@ public class Skuperfield extends Character {
         return plant;
     }
 
-    public Item examine(Plant plant) throws PlantNotFoundException {
+    public Item examine(Plant plant) {
         System.out.printf("Скуперфильд внимательно осмотрел %s. ", plant.getName());
 
         Item item = plant.getSampleItem();
@@ -117,13 +117,13 @@ public class Skuperfield extends Character {
         return null;
     }
 
-    public void realizeItemGrowInGround(Item item) throws PlantNotFoundException {
+    public void realizeItemGrowInGround(Item item) {
         this.hasItemUncertainty = true;
 
         String itemName = item.getName();
 
         System.out.printf(
-                "Впрочем, он не был уверен в своей догадке, так как до этого видел %s только в жареном или вареном " +
+                "Впрочем, он далеко не был уверен в своей догадке, так как до этого видел %s только в жареном или вареном " +
                 "виде и к тому же почему-то воображал, что %s растёт на деревьях.\n",
                 itemName, itemName
         );
@@ -132,7 +132,7 @@ public class Skuperfield extends Character {
     public void tryToEat(Item item) throws DisgustingTasteException {
         String itemName = item.getName();
         if (!(item instanceof Edible food)) {
-            System.out.printf("Скуперфильд попытался укусить %s, но чуть не сломал зуб. Несъедобно.",  itemName);
+            System.out.printf("Скуперфильд попытался укусить %s, но чуть не сломал зуб. Несъедобно.\n", itemName);
             return;
         }
 
@@ -141,14 +141,14 @@ public class Skuperfield extends Character {
         if (item instanceof Cleanable cleanableItem) {
             if (!cleanableItem.isClean()) {
                 cleanableItem.clean();
-                text += "Отряхнув " + itemName + " от грязи, ";
+                text += "Отряхнув от земли " + itemName + ", ";
             }
         }
 
-        text += "Скуперфильд откусил кусочек. ";
+        text += "Скуперфильд откусил кусочек и попробовал его разжевать. ";
 
         if (food.getTaste() == Taste.DISGUSTING) {
-            throw new DisgustingTasteException(text + "Какая гадость, " + itemName + " ужасен на вкус.");
+            throw new DisgustingTasteException(text + "Какая гадость, сырой " + itemName + " ужасен на вкус.");
         }
 
         System.out.println(text + "Ммм, вполне съедобно.");

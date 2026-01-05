@@ -11,7 +11,7 @@ public class PotatoPlant extends Plant {
     private final List<PotatoTuber> tubers;
     
     public PotatoPlant(Location loc, PlantColor color, boolean isBrittle) {
-        super("клубень", color, loc, isBrittle);
+        super("куст", color, loc, isBrittle);
         this.tubers = new ArrayList<>();
 
         java.util.Random random = new java.util.Random();
@@ -48,22 +48,22 @@ public class PotatoPlant extends Plant {
         return null;
     }
     
-    @Override
+   @Override
     public String toString() {
-        return super.toString() + " (brittle: " + isBrittle + ", tubers: " + tubers.size() + ")";
+        return super.toString() + " (tubers: " + tubers.size() + ")";
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         PotatoPlant that = (PotatoPlant) o;
-        return isBrittle == that.isBrittle && Objects.equals(tubers, that.tubers);
+        return Objects.equals(tubers, that.tubers);
     }
-    
+
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), tubers, isBrittle);
+        return Objects.hash(super.hashCode(), tubers);
     }
 }

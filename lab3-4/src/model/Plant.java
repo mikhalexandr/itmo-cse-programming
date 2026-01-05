@@ -56,22 +56,26 @@ public abstract class Plant implements Uprootable {
     
     @Override
     public String toString() {
-        return species + " (color: " + color + ", location: " + location + ", uprooted: " + isUprooted + ")";
+        return species + " (color: " + color +
+               ", location: " + location +
+               ", uprooted: " + isUprooted +
+               ", brittle: " + isBrittle + ")";
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Plant plant = (Plant) o;
-        return isUprooted == plant.isUprooted && 
-               Objects.equals(species, plant.species) && 
-               color == plant.color && 
+        return isUprooted == plant.isUprooted &&
+               isBrittle == plant.isBrittle &&
+               Objects.equals(species, plant.species) &&
+               color == plant.color &&
                Objects.equals(location, plant.location);
     }
-    
+
     @Override
     public int hashCode() {
-        return Objects.hash(species, color, isUprooted, location);
+        return Objects.hash(species, color, isUprooted, isBrittle, location);
     }
 }
