@@ -106,7 +106,6 @@ public class Skuperfield extends Character {
         System.out.printf("Скуперфильд внимательно осмотрел %s. ", plant.getName());
 
         Item item = plant.getSampleItem();
-
         if (item != null) {
             System.out.printf("Он начал догадываться, что перед ним самый обыкновенный %s.\n", item.getName());
             return item;
@@ -121,7 +120,6 @@ public class Skuperfield extends Character {
         this.hasItemUncertainty = true;
 
         String itemName = item.getName();
-
         System.out.printf(
                 "Впрочем, он далеко не был уверен в своей догадке, так как до этого видел %s только в жареном или вареном " +
                 "виде и к тому же почему-то воображал, что %s растёт на деревьях.\n",
@@ -137,20 +135,16 @@ public class Skuperfield extends Character {
         }
 
         String text = "";
-
         if (item instanceof Cleanable cleanableItem) {
             if (!cleanableItem.isClean()) {
                 cleanableItem.clean();
                 text += "Отряхнув от земли " + itemName + ", ";
             }
         }
-
         text += "Скуперфильд откусил кусочек и попробовал его разжевать. ";
-
         if (food.getTaste() == Taste.DISGUSTING) {
             throw new DisgustingTasteException(text + "Какая гадость, сырой " + itemName + " ужасен на вкус.");
         }
-
         System.out.println(text + "Ммм, вполне съедобно.");
     }
 
@@ -167,7 +161,6 @@ public class Skuperfield extends Character {
 
         int count = 0;
         InventoryFullException lastError = null;
-
         for (Item item : items) {
             try {
                 this.putInPocket(item);

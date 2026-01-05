@@ -121,6 +121,9 @@ package "model" {
         # location: Location
         + Plant(species: String, color: PlantColor, loc: Location, isBrittle: boolean)
         + {abstract} hasFruit(): boolean
+        + {abstract} harvest(amount: int): List<Item>
+        + {abstract} getSampleItem(): Item
+        + getName(): String
         + getLocation(): Location
         + getColor(): PlantColor
         + isBrittle(): boolean
@@ -135,11 +138,11 @@ package "model" {
         # currentLocation: Location
         # inventory: Inventory
         + Character(name: String, startLoc: Location)
-        + {abstract} move(ground: Ground): String
+        + {abstract} move(ground: Ground): void
         + setLocation(loc: Location): void
+        # setMood(mood: Mood): void
         + getMood(): Mood
         + getInventory(): Inventory
-        + getCurrentLocation(): Location
         + toString(): String
         + equals(o: Object): boolean
         + hashCode(): int
@@ -150,7 +153,9 @@ package "model" {
         - isCooked: boolean
         - isClean: boolean
         + PotatoTuber(weight: double)
-        + isCooked(): boolean
+        + getTaste(): Taste
+        + clean(): void
+        + isClean(): boolean
         + toString(): String
         + equals(o: Object): boolean
         + hashCode(): int
@@ -158,25 +163,25 @@ package "model" {
 
     class PotatoPlant {
         - tubers: List<PotatoTuber>
-        - isBrittle: boolean
         + PotatoPlant(loc: Location, color: PlantColor, isBrittle: boolean)
-        + getTubers(): List<PotatoTuber>
-        + removeTuber(tuber: PotatoTuber): void
         + hasFruit(): boolean
+        + harvest(amount: int): List<Item>
+        + getSampleItem(): Item
         + toString(): String
         + equals(o: Object): boolean
         + hashCode(): int
     }
 
     class Skuperfield {
-        - hasPotatoUncertainty: boolean
+        - hasItemUncertainty: boolean
         + Skuperfield(startLoc: Location)
-        + move(ground: Ground): String
-        + uprootPlant(ground: Ground): String
-        + examine(ground: Ground): String
-        + realizePotatoGrowInGround(ground: Ground): String
-        + tryToEat(ground: Ground): String
-        + putInPocket(ground: Ground, amount: int): String
+        + move(ground: Ground): void
+        + uprootPlant(ground: Ground): Plant
+        + examine(plant: Plant): Item
+        + realizeItemGrowInGround(item: Item): void
+        + tryToEat(item: Item): void
+        + putInPocket(item: Item): void
+        + putInPocket(items: List<? extends Item>): void
         + toString(): String
         + equals(o: Object): boolean
         + hashCode(): int
@@ -187,9 +192,6 @@ package "model" {
         - items: List<Item>
         + Inventory(capacity: int)
         + addItem(item: Item): void
-        + getItems(): List<Item>
-        + getSize(): int
-        + getMaxCapacity(): int
         + toString(): String
         + equals(o: Object): boolean
         + hashCode(): int
@@ -203,13 +205,11 @@ package "model" {
         + setFog(fog: Fog): void
         + addPlant(plant: Plant): void
         + getPlantAt(loc: Location): Plant
-        + dissipateFog(): String
+        + dissipateFog(): void
         + getDominantColor(): String
         + hasMajorityBrittlePlants(): boolean
         + getPlantCount(): int
         + isDifficultToMove(): boolean
-        + getType(): GroundType
-        + getPlants(): List<Plant>
         + toString(): String
         + equals(o: Object): boolean
         + hashCode(): int
@@ -218,7 +218,7 @@ package "model" {
     class Fog {
         - isDense: boolean
         + Fog()
-        + dissipate(): String
+        + dissipate(): void
         + toString(): String
         + equals(o: Object): boolean
         + hashCode(): int
@@ -261,6 +261,7 @@ Inventory .down.> InventoryFullException
 
 ' Usage dependencies
 Skuperfield .right.> Ground
+Skuperfield .right.> Plant
 
 ' Hidden links for package alignment
 Item -[hidden]right- Plant
