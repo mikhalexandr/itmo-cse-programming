@@ -75,11 +75,7 @@ public class Ground {
     public boolean isDifficultToMove() {
         return type == GroundType.LOOSE;
     }
-    
-    public GroundType getType() {
-        return type;
-    }
-    
+
     @Override
     public String toString() {
         return String.format("Ground (type: %s, plants: %d, fog: %s)", 
