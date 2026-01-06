@@ -228,7 +228,6 @@ package "model" {
 ' ============================================
 ' 7. RELATIONSHIPS
 ' ============================================
-
 ' Inheritance
 PotatoTuber -up-|> Item
 PotatoPlant -up-|> Plant
