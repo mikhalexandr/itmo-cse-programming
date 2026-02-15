@@ -1,0 +1,33 @@
+version: '3'
+
+vars:
+  SERVER_JAR:
+    sh: ls lab-server/target/lab-server-1.0-SNAPSHOT-jar-with-dependencies.jar | head -n 1
+  CLIENT_JAR:
+    sh: ls lab-client/target/lab-client-1.0-SNAPSHOT-jar-with-dependencies.jar | head -n 1
+
+tasks:
+
+  build:
+    desc: Build all modules with Maven
+    cmds:
+      - mvn clean install
+
+  run:server:
+    desc: Run lab-server jar
+    deps: [build]
+    cmds:
+      - java -jar {{.SERVER_JAR}}
+
+  run:client:
+    desc: Run lab-client jar
+    deps: [build]
+    cmds:
+      - java -jar {{.CLIENT_JAR}}
+
+  run:all:
+    desc: Run server and client
+    deps: [build]
+    cmds:
+      - task: run:server
+      - task: run:client

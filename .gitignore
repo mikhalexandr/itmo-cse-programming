@@ -10,7 +10,7 @@
 /bin/
 /build/
 /out/
-/target/
+target/
 
 # Конфигурация IDE (Eclipse, IntelliJ IDEA, NetBeans и др.)
 *.iml
