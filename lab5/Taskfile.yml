@@ -2,9 +2,9 @@ version: '3'
 
 vars:
   SERVER_JAR:
-    sh: ls lab-server/target/lab-server-1.0-SNAPSHOT-jar-with-dependencies.jar | head -n 1
+    sh: ls server/target/server-1.0.0-jar-with-dependencies.jar | head -n 1
   CLIENT_JAR:
-    sh: ls lab-client/target/lab-client-1.0-SNAPSHOT-jar-with-dependencies.jar | head -n 1
+    sh: ls client/target/client-1.0.0-jar-with-dependencies.jar | head -n 1
 
 tasks:
 
@@ -14,13 +14,13 @@ tasks:
       - mvn clean install
 
   run:server:
-    desc: Run lab-server jar
+    desc: Run server jar
     deps: [build]
     cmds:
       - java -jar {{.SERVER_JAR}}
 
   run:client:
-    desc: Run lab-client jar
+    desc: Run client jar
     deps: [build]
     cmds:
       - java -jar {{.CLIENT_JAR}}

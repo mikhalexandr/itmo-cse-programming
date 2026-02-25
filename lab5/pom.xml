@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>itmo.cse.lab5</groupId>
   <artifactId>lab5</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
   <name>lab5</name>
   <properties>
@@ -57,8 +57,8 @@
     </pluginManagement>
   </build>
   <modules>
-    <module>lab-common</module>
-    <module>lab-client</module>
-    <module>lab-server</module>
+    <module>common</module>
+    <module>client</module>
+    <module>server</module>
   </modules>
 </project>
