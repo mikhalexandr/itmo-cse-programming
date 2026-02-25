@@ -13,6 +13,11 @@ tasks:
     cmds:
       - mvn clean install
 
+  checkstyle:
+    desc: Check project code style
+    cmds:
+      - mvn checkstyle:check
+
   run:server:
     desc: Run server jar
     deps: [build]
