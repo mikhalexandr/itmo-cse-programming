@@ -32,6 +32,20 @@ public class SpaceMarine implements Comparable<SpaceMarine> {
         this.chapter = chapter;
     }
 
+    public void validate() {
+        Validator.validateId(id);
+        Validator.validateString(name, "SpaceMarine.name");
+        Validator.validateNotNull(coordinates, "SpaceMarine.coordinates");
+        Validator.validateGreaterThan(coordinates.getX(), -121, "Coordinates.x");
+        Validator.validateGreaterThan(coordinates.getY(), -184, "Coordinates.y");
+        Validator.validateNotNull(creationDate, "SpaceMarine.creationDate");
+        Validator.validateGreaterThan(health, 0, "SpaceMarine.health");
+        Validator.validateNotNull(category, "SpaceMarine.category");
+        if (chapter != null) {
+            Validator.validateString(chapter.getName(), "Chapter.name");
+        }
+    }
+
     public Integer getId() {
         return id;
     }
