@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "Tigr",
+    "coordinates": {
+      "x": 10.5,
+      "y": 20
+    },
+    "creationDate": "Feb 27, 2026, 12:00:00 PM",
+    "health": 100.0,
+    "height": 200,
+    "category": "ASSAULT",
+    "meleeWeapon": "POWER_SWORD",
+    "chapter": {
+      "name": "Ultramarines"
+    }
+  },
+  {
+    "id": 2,
+    "name": "VsemPrivet",
+    "coordinates": {
+      "x": -50.0,
+      "y": 100
+    },
+    "creationDate": "Feb 27, 2026, 1:00:00 AM",
+    "health": 75.5,
+    "height": 190,
+    "category": "SCOUT"
+  },
+  {
+    "id": 2,
+    "name": "q",
+    "coordinates": {
+      "x": 1.0,
+      "y": 2
+    },
+    "creationDate": "Feb 28, 2026, 1:05:55 AM",
+    "health": 2.0,
+    "height": 2,
+    "category": "ASSAULT",
+    "meleeWeapon": "POWER_SWORD",
+    "chapter": {
+      "name": "qwewq",
+      "parentLegion": "12323"
+    }
+  }
+]

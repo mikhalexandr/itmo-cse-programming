@@ -1,5 +1,7 @@
 package itmo.cse.lab5.common.commands;
 
+import itmo.cse.lab5.common.exceptions.CommandExecutionException;
+
 public abstract class Command {
     private final String name;
     private final String description;
@@ -17,5 +19,5 @@ public abstract class Command {
         return description;
     }
 
-    public abstract void execute(String[] args);
+    public abstract void execute(String[] args) throws CommandExecutionException;
 }

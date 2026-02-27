@@ -3,16 +3,16 @@ package itmo.cse.lab5.common.util;
 import itmo.cse.lab5.common.exceptions.ValidationException;
 
 public final class Validator {
+    private Validator() {
+        throw new UnsupportedOperationException("Это утилитарный класс, его нельзя инстанцировать");
+    }
+
     public static boolean isValidString(String str) {
         return str != null && !str.trim().isEmpty();
     }
 
     public static boolean isGreaterThan(double value, double min) {
         return value > min;
-    }
-
-    public static boolean isNotNull(Object value) {
-        return value != null;
     }
 
     public static void validateString(String s, String fieldName) {

@@ -1,6 +1,8 @@
 version: '3'
 
 vars:
+  DATA_FILE:
+    sh: ls data/data.json
   SERVER_JAR:
     sh: ls server/target/server-1.0.0-jar-with-dependencies.jar | head -n 1
   CLIENT_JAR:
@@ -22,13 +24,13 @@ tasks:
     desc: Run server jar
     deps: [build]
     cmds:
-      - java -jar {{.SERVER_JAR}}
+      - java -jar {{.SERVER_JAR}} {{.DATA_FILE}}
 
   run:client:
     desc: Run client jar
     deps: [build]
     cmds:
-      - java -jar {{.CLIENT_JAR}}
+      - java -jar {{.CLIENT_JAR}} {{.DATA_FILE}}
 
   run:all:
     desc: Run server and client

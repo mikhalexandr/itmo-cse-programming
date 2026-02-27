@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class Chapter implements Comparable<Chapter> {
     private String name;
-    private String parentLegion;
+    private final String parentLegion;
 
     public Chapter(String name, String parentLegion) {
         Validator.validateString(name, "Chapter.name");
@@ -22,13 +22,6 @@ public class Chapter implements Comparable<Chapter> {
         Validator.validateString(name, "Chapter.name");
         this.name = name;
     }
-    public String getParentLegion() {
-        return parentLegion;
-    }
-
-    public void setParentLegion(String parentLegion) {
-        this.parentLegion = parentLegion;
-    }
 
     @Override
     public int compareTo(Chapter o) {
@@ -37,8 +30,12 @@ public class Chapter implements Comparable<Chapter> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Chapter that = (Chapter) o;
         return Objects.equals(name, that.name)
                 && Objects.equals(parentLegion, that.parentLegion);
