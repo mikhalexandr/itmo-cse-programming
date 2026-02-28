@@ -20,6 +20,11 @@ tasks:
     cmds:
       - mvn checkstyle:check
 
+  javadoc:
+    desc: Build JavaDoc
+    cmds:
+      - mvn -q -DskipTests javadoc:aggregate
+
   run:server:
     desc: Run server jar
     deps: [build]

@@ -4,6 +4,10 @@ import itmo.cse.lab5.common.util.Validator;
 
 import java.util.Objects;
 
+/**
+ * Модель элемента коллекции {@code SpaceMarine}.
+ * Реализует естественный порядок сортировки по имени.
+ */
 public class SpaceMarine implements Comparable<SpaceMarine> {
     private static final int MIN_X = -121;
     private static final int MIN_Y = -184;
@@ -18,6 +22,17 @@ public class SpaceMarine implements Comparable<SpaceMarine> {
     private final MeleeWeapon meleeWeapon;
     private final Chapter chapter;
 
+    /**
+     * Создает новый экземпляр SpaceMarine.
+     *
+     * @param name имя (не null и не пустое)
+     * @param coordinates координаты (не null)
+     * @param health здоровье (должно быть > 0)
+     * @param height рост
+     * @param category категория (не null)
+     * @param meleeWeapon оружие ближнего боя (может быть null)
+     * @param chapter информация об ордене (может быть null)
+     */
     public SpaceMarine(
             String name, Coordinates coordinates, float health, long height, AstartesCategory category,
             MeleeWeapon meleeWeapon, Chapter chapter
@@ -35,6 +50,9 @@ public class SpaceMarine implements Comparable<SpaceMarine> {
         this.chapter = chapter;
     }
 
+    /**
+     * Проверяет корректность состояния объекта.
+     */
     public void validate() {
         Validator.validateId(id);
         Validator.validateString(name, "SpaceMarine.name");
@@ -49,42 +67,90 @@ public class SpaceMarine implements Comparable<SpaceMarine> {
         }
     }
 
+    /**
+     * @return идентификатор объекта
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * @param id идентификатор (должен быть > 0)
+     */
     public void setId(Integer id) {
         Validator.validateId(id);
         this.id = id;
     }
 
+    /**
+     * @return имя SpaceMarine
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name новое имя SpaceMarine
+     */
     public void setName(String name) {
         Validator.validateString(name, "SpaceMarine.name");
         this.name = name;
     }
 
 
+    /**
+     * @return дата создания объекта
+     */
     public java.util.Date getCreationDate() {
         return creationDate;
     }
 
+    /**
+     * @param creationDate дата создания (не null)
+     */
     public void setCreationDate(java.util.Date creationDate) {
         Validator.validateNotNull(creationDate, "SpaceMarine.creationDate");
         this.creationDate = creationDate;
     }
 
+    /**
+     * @return значение здоровья
+     */
     public float getHealth() {
         return health;
     }
 
+    /**
+     * @return координаты SpaceMarine
+     */
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    /**
+     * @return рост SpaceMarine
+     */
+    public long getHeight() {
+        return height;
+    }
+
+    /**
+     * @return категория космодесантника
+     */
     public AstartesCategory getCategory() {
         return category;
     }
 
+    /**
+     * @return оружие ближнего боя или null
+     */
+    public MeleeWeapon getMeleeWeapon() {
+        return meleeWeapon;
+    }
+
+    /**
+     * @return данные ордена или null
+     */
     public Chapter getChapter() {
         return chapter;
     }
@@ -113,11 +179,27 @@ public class SpaceMarine implements Comparable<SpaceMarine> {
 
     @Override
     public String toString() {
+        String separator = " ═══════════════════════════════════";
+        String line      = " ───────────────────────────────────";
         return String.format(
-                "SpaceMarine{id=%d, name='%s', coordinates=%s, creationDate=%s, "
-                        + "health=%.1f, height=%d, category=%s, meleeWeapon=%s, chapter=%s}",
-                id, name, coordinates, creationDate,
-                health, height, category, meleeWeapon, chapter
+                """
+                        %s
+                         [%d] %s%n%s
+                          Coordinates:  (%.1f; %d)
+                          Created:      %s
+                          Health:       %.1f
+                          Height:       %d
+                          Category:     %s
+                          Melee Weapon: %s
+                          Chapter:      %s""",
+                separator, id, name, line,
+                coordinates.getX(), coordinates.getY(),
+                new java.text.SimpleDateFormat("HH:mm:ss dd.MM.yyyy").format(creationDate),
+                health,
+                height,
+                category,
+                meleeWeapon != null ? meleeWeapon : "-",
+                chapter != null ? chapter.getName() : "-"
         );
     }
 }

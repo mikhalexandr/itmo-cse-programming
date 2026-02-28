@@ -5,14 +5,26 @@ import itmo.cse.lab5.common.exceptions.CommandExecutionException;
 import itmo.cse.lab5.server.managers.CollectionManager;
 import itmo.cse.lab5.server.models.AstartesCategory;
 
+/**
+ * Команда {@code count_by_category}: выводит количество элементов заданной категории.
+ */
 public class CountByCategoryCommand extends Command {
     private final CollectionManager collectionManager;
 
+    /**
+     * @param collectionManager менеджер коллекции
+     */
     public CountByCategoryCommand(CollectionManager collectionManager) {
-        super("count_by_category", "вывести количество элементов с заданной категорией");
+        super("count_by_category", "<category>", "вывести количество элементов с заданной категорией");
         this.collectionManager = collectionManager;
     }
 
+    /**
+     * Подсчитывает элементы с указанной категорией.
+     *
+     * @param args ожидается один аргумент: категория
+     * @throws CommandExecutionException если категория не передана или некорректна
+     */
     @Override
     public void execute(String[] args) throws CommandExecutionException {
         if (args.length == 0) {

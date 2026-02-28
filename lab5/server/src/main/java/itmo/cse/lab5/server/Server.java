@@ -9,12 +9,20 @@ import itmo.cse.lab5.server.managers.FileManager;
 
 import java.util.Scanner;
 
+/**
+ * Точка входа серверного приложения.
+ */
 public final class Server {
 
     private Server() {
         throw new UnsupportedOperationException("Это утилитарный класс, его нельзя инстанцировать");
     }
 
+    /**
+     * Запускает интерактивный цикл командного интерпретатора.
+     *
+     * @param args первый аргумент должен содержать путь к JSON-файлу коллекции
+     */
     public static void main(String[] args) {
         if (args.length == 0) {
             System.out.println("Использование: java -jar [SERVER_JAR] <путь к файлу>");
@@ -33,7 +41,7 @@ public final class Server {
 
         try {
             collectionManager.setCollection(fileManager.load());
-            System.out.println("Загружено элементов: " + collectionManager.size());
+            System.out.printf("Загружено элементов: %d%n", collectionManager.size());
         } catch (FileReadException e) {
             System.err.printf("Ошибка загрузки: %s%n", e.getMessage());
         }
@@ -51,6 +59,14 @@ public final class Server {
         }
     }
 
+    /**
+     * Регистрирует все поддерживаемые команды.
+     *
+     * @param commandManager менеджер команд
+     * @param collectionManager менеджер коллекции
+     * @param inputHandler обработчик интерактивного ввода
+     * @param fileManager менеджер чтения/записи файла
+     */
     public static void registerCommands(CommandManager commandManager, CollectionManager collectionManager,
                                         InputHandler inputHandler, FileManager fileManager) {
         commandManager.register(new HelpCommand(commandManager));
@@ -61,7 +77,7 @@ public final class Server {
         commandManager.register(new RemoveByIdCommand(collectionManager));
         commandManager.register(new ClearCommand(collectionManager));
         commandManager.register(new SaveCommand(collectionManager, fileManager));
-        commandManager.register(new ExecuteScriptCommand(commandManager));
+        commandManager.register(new ExecuteScriptCommand(commandManager, inputHandler));
         commandManager.register(new ExitCommand());
         commandManager.register(new HeadCommand(collectionManager));
         commandManager.register(new AddIfMinCommand(collectionManager, inputHandler));
