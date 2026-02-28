@@ -18,7 +18,7 @@ public class AddIfMinCommand extends Command {
      * @param inputHandler обработчик интерактивного ввода
      */
     public AddIfMinCommand(CollectionManager collectionManager, InputHandler inputHandler) {
-        super("add_if_min", "<element>", "добавить элемент, если он меньше минимального");
+        super("add_if_min", "{element}", "добавить элемент, если он меньше минимального");
         this.collectionManager = collectionManager;
         this.inputHandler = inputHandler;
     }

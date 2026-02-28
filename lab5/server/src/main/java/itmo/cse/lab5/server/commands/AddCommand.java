@@ -18,7 +18,7 @@ public class AddCommand extends Command {
      * @param inputHandler обработчик интерактивного ввода
      */
     public AddCommand(CollectionManager collectionManager, InputHandler inputHandler) {
-        super("add", "<element>", "добавить новый элемент в коллекцию");
+        super("add", "{element}", "добавить новый элемент в коллекцию");
         this.collectionManager = collectionManager;
         this.inputHandler = inputHandler;
     }

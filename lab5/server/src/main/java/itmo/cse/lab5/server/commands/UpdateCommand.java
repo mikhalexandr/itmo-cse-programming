@@ -18,7 +18,7 @@ public class UpdateCommand extends Command {
      * @param inputHandler обработчик интерактивного ввода
      */
     public UpdateCommand(CollectionManager collectionManager, InputHandler inputHandler) {
-        super("update", "<id>", "обновить элемент коллекции по id");
+        super("update", "<id> {element}", "обновить элемент коллекции по id");
         this.collectionManager = collectionManager;
         this.inputHandler = inputHandler;
     }
