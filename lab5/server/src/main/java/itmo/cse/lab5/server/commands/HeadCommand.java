@@ -1,8 +1,7 @@
 package itmo.cse.lab5.server.commands;
 
-import itmo.cse.lab5.common.commands.Command;
+import itmo.cse.lab5.common.models.SpaceMarine;
 import itmo.cse.lab5.server.managers.CollectionManager;
-import itmo.cse.lab5.server.models.SpaceMarine;
 
 /**
  * Команда {@code head}: выводит первый элемент коллекции.
@@ -22,14 +21,15 @@ public class HeadCommand extends Command {
      * Печатает первый элемент коллекции или сообщение о пустой коллекции.
      *
      * @param args аргументы команды (не используются)
+     * @return текст результата выполнения
      */
     @Override
-    public void execute(String[] args) {
+    public String execute(String[] args) {
         SpaceMarine head = collectionManager.head();
         if (head == null) {
-            System.out.println("Коллекция пуста");
+            return "Коллекция пуста";
         } else {
-            System.out.println(head);
+            return head.toString();
         }
     }
 }

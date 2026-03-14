@@ -1,8 +1,7 @@
 package itmo.cse.lab5.server.commands;
 
-import itmo.cse.lab5.common.commands.Command;
+import itmo.cse.lab5.common.models.SpaceMarine;
 import itmo.cse.lab5.server.managers.CollectionManager;
-import itmo.cse.lab5.server.models.SpaceMarine;
 
 /**
  * Команда {@code max_by_chapter}: выводит элемент с максимальным chapter.
@@ -22,14 +21,15 @@ public class MaxByChapterCommand extends Command {
      * Выводит элемент с максимальным значением поля chapter.
      *
      * @param args аргументы команды (не используются)
+     * @return текст результата выполнения
      */
     @Override
-    public void execute(String[] args) {
+    public String execute(String[] args) {
         SpaceMarine max = collectionManager.maxByChapter();
         if (max == null) {
-            System.out.println("Нет элементов с chapter");
+            return "Нет элементов с chapter";
         } else {
-            System.out.println(max);
+            return max.toString();
         }
     }
 }

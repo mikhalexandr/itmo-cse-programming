@@ -1,7 +1,8 @@
 package itmo.cse.lab5.server.commands;
 
-import itmo.cse.lab5.common.commands.Command;
 import itmo.cse.lab5.server.managers.CollectionManager;
+
+import java.util.stream.Collectors;
 
 /**
  * Команда {@code show}: выводит все элементы коллекции.
@@ -21,13 +22,15 @@ public class ShowCommand extends Command {
      * Печатает все элементы коллекции в строковом представлении.
      *
      * @param args аргументы команды (не используются)
+     * @return текст результата выполнения
      */
     @Override
-    public void execute(String[] args) {
+    public String execute(String[] args) {
         if (collectionManager.size() == 0) {
-            System.out.println("Коллекция пуста");
-            return;
+            return "Коллекция пуста";
         }
-        collectionManager.getCollection().forEach(System.out::println);
+        return collectionManager.getCollection().stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 }

@@ -1,10 +1,9 @@
 package itmo.cse.lab5.server.commands;
 
-import itmo.cse.lab5.common.commands.Command;
-import itmo.cse.lab5.common.exceptions.CommandExecutionException;
-import itmo.cse.lab5.server.input.InputHandler;
+import itmo.cse.lab5.server.exceptions.CommandExecutionException;
+import itmo.cse.lab5.common.models.SpaceMarine;
+import itmo.cse.lab5.server.io.InputHandler;
 import itmo.cse.lab5.server.managers.CollectionManager;
-import itmo.cse.lab5.server.models.SpaceMarine;
 
 /**
  * Команда {@code update}: обновляет элемент коллекции по id.
@@ -27,10 +26,11 @@ public class UpdateCommand extends Command {
      * Обновляет элемент с переданным id новыми данными, считанными из консоли.
      *
      * @param args ожидается один аргумент: id
+     * @return текст результата выполнения
      * @throws CommandExecutionException если id не передан, некорректен или элемент не найден
      */
     @Override
-    public void execute(String[] args) throws CommandExecutionException {
+    public String execute(String[] args) throws CommandExecutionException {
         if (args.length == 0) {
             throw new CommandExecutionException("Использование: update <id>");
         }
@@ -48,12 +48,9 @@ public class UpdateCommand extends Command {
                 );
             }
 
-            System.out.println("Введите новые значения полей:");
             SpaceMarine spaceMarine = inputHandler.readSpaceMarine(oldSpaceMarine);
             collectionManager.update(id, spaceMarine);
-            System.out.println("Элемент успешно обновлён");
-            System.out.println("Новое значение элемента:");
-            System.out.println(collectionManager.getById(id));
+            return String.format("Элемент успешно обновлён%nНовое значение элемента:%n%s", collectionManager.getById(id));
         } catch (NumberFormatException e) {
             throw new CommandExecutionException("id должен быть числом");
         }

@@ -1,58 +1,73 @@
 package itmo.cse.lab5.server.commands;
 
-import itmo.cse.lab5.common.commands.Command;
-import itmo.cse.lab5.common.exceptions.CommandExecutionException;
-import itmo.cse.lab5.server.input.InputHandler;
-import itmo.cse.lab5.server.managers.CommandManager;
+import itmo.cse.lab5.server.exceptions.CommandExecutionException;
+import itmo.cse.lab5.common.dto.request.CommandRequest;
+import itmo.cse.lab5.common.dto.response.CommandResponse;
+import itmo.cse.lab5.server.io.CommandRequestParser;
+import itmo.cse.lab5.server.io.InputHandler;
+import itmo.cse.lab5.server.managers.CommandExecutor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.HashSet;
 import java.util.Scanner;
-import java.util.Set;
 
 /**
  * Команда {@code execute_script}: выполняет команды из указанного файла.
  */
 public class ExecuteScriptCommand extends Command {
-    private static final Set<String> RUNNING_SCRIPTS = new HashSet<>();
-    private final CommandManager commandManager;
+    private static final int MAX_RECURSION_DEPTH = 3;
+    private static int recursionDepth;
+    private final CommandExecutor commandExecutor;
     private final InputHandler inputHandler;
+    private final CommandRequestParser commandRequestParser;
+    private boolean exitRequested;
 
     /**
-     * @param commandManager менеджер команд
+     * @param commandExecutor исполнитель команд
      * @param inputHandler обработчик пользовательского ввода
+     * @param commandRequestParser парсер строковых команд
      */
-    public ExecuteScriptCommand(CommandManager commandManager, InputHandler inputHandler) {
+    public ExecuteScriptCommand(CommandExecutor commandExecutor,
+                                InputHandler inputHandler,
+                                CommandRequestParser commandRequestParser) {
         super("execute_script", "<file_name>", "выполнить скрипт из файла");
-        this.commandManager = commandManager;
+        this.commandExecutor = commandExecutor;
         this.inputHandler = inputHandler;
+        this.commandRequestParser = commandRequestParser;
     }
 
     /**
      * Считывает файл скрипта и выполняет команды построчно.
      *
      * @param args ожидается один аргумент: имя файла скрипта
+     * @return лог выполнения скрипта
      * @throws CommandExecutionException если аргумент не передан или файл не найден
      */
     @Override
-    public void execute(String[] args) throws CommandExecutionException {
+    public String execute(String[] args) throws CommandExecutionException {
+        exitRequested = false;
         String fileName = parseFileName(args);
-        String scriptKey = resolveScriptKey(fileName);
-
-        if (RUNNING_SCRIPTS.contains(scriptKey)) {
+        int nextDepth = enterRecursionLevel();
+        if (nextDepth >= MAX_RECURSION_DEPTH) {
             throw new CommandExecutionException(
-                    String.format("Обнаружен рекурсивный вызов скрипта: %s", fileName)
+                    String.format(
+                            "Достигнута максимальная глубина рекурсии (%d) при вызове скрипта: %s",
+                            MAX_RECURSION_DEPTH,
+                            fileName
+                    )
             );
         }
 
-        RUNNING_SCRIPTS.add(scriptKey);
         try {
-            executeScriptLines(fileName);
+            return executeScriptLines(fileName);
         } finally {
-            RUNNING_SCRIPTS.remove(scriptKey);
+            exitRecursionLevel();
         }
+    }
+
+    @Override
+    public boolean shouldExit() {
+        return exitRequested;
     }
 
     private String parseFileName(String[] args) throws CommandExecutionException {
@@ -66,24 +81,40 @@ public class ExecuteScriptCommand extends Command {
         return fileNameArgs[0];
     }
 
-    private String resolveScriptKey(String fileName) {
-        try {
-            return new File(fileName).getCanonicalPath();
-        } catch (IOException e) {
-            return new File(fileName).getAbsolutePath();
+    private static synchronized int enterRecursionLevel() {
+        recursionDepth++;
+        return recursionDepth;
+    }
+
+    private static synchronized void exitRecursionLevel() {
+        recursionDepth--;
+        if (recursionDepth < 0) {
+            recursionDepth = 0;
         }
     }
 
-    private void executeScriptLines(String fileName) throws CommandExecutionException {
+    private String executeScriptLines(String fileName) throws CommandExecutionException {
+        StringBuilder builder = new StringBuilder();
         try (Scanner fileScanner = new Scanner(new File(fileName))) {
             Scanner previousScanner = inputHandler.getScanner();
             try {
                 inputHandler.setScanner(fileScanner);
                 while (fileScanner.hasNextLine()) {
                     String line = fileScanner.nextLine();
-                    if (!line.isEmpty()) {
-                        System.out.println("$ " + line);
-                        commandManager.execute(line);
+                    if (!line.isBlank()) {
+                        builder.append("$ ").append(line).append(System.lineSeparator());
+                        CommandRequest request = commandRequestParser.toRequest(line);
+                        if (request == null) {
+                            continue;
+                        }
+                        CommandResponse response = commandExecutor.execute(request);
+                        if (response.getMessage() != null && !response.getMessage().isBlank()) {
+                            builder.append(response.getMessage()).append(System.lineSeparator());
+                        }
+                        if (response.isExitRequested()) {
+                            exitRequested = true;
+                            break;
+                        }
                     }
                 }
             } finally {
@@ -92,5 +123,6 @@ public class ExecuteScriptCommand extends Command {
         } catch (FileNotFoundException e) {
             throw new CommandExecutionException(String.format("файл [%s] не найден", fileName));
         }
+        return builder.toString().trim();
     }
 }

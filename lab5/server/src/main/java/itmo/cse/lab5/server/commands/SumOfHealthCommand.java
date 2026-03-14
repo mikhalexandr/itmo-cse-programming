@@ -1,6 +1,5 @@
 package itmo.cse.lab5.server.commands;
 
-import itmo.cse.lab5.common.commands.Command;
 import itmo.cse.lab5.server.managers.CollectionManager;
 
 /**
@@ -21,9 +20,10 @@ public class SumOfHealthCommand extends Command {
      * Печатает сумму здоровья всех элементов.
      *
      * @param args аргументы команды (не используются)
+     * @return текст результата выполнения
      */
     @Override
-    public void execute(String[] args) {
-        System.out.printf("Сумма здоровья: %f", collectionManager.sumOfHealth());
+    public String execute(String[] args) {
+        return String.format("Сумма здоровья: %f", collectionManager.sumOfHealth());
     }
 }

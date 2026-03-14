@@ -1,6 +1,5 @@
 package itmo.cse.lab5.server.commands;
 
-import itmo.cse.lab5.common.commands.Command;
 import itmo.cse.lab5.server.managers.CollectionManager;
 
 /**
@@ -21,11 +20,11 @@ public class InfoCommand extends Command {
      * Печатает тип коллекции, дату инициализации и количество элементов.
      *
      * @param args аргументы команды (не используются)
+     * @return текст результата выполнения
      */
     @Override
-    public void execute(String[] args) {
-        System.out.printf("Тип коллекции: %s%n", collectionManager.getType());
-        System.out.printf("Дата инициализации: %s%n", collectionManager.getInitializationDateFormatted());
-        System.out.printf("Количество элементов: %d%n", collectionManager.size());
+    public String execute(String[] args) {
+        return String.format("Тип коллекции: %s%nДата инициализации: %s%nКоличество элементов: %d",
+                collectionManager.getType(), collectionManager.getInitializationDateFormatted(), collectionManager.size());
     }
 }

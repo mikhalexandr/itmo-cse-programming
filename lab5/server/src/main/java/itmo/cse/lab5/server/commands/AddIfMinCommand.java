@@ -1,10 +1,9 @@
 package itmo.cse.lab5.server.commands;
 
-import itmo.cse.lab5.common.commands.Command;
-import itmo.cse.lab5.common.exceptions.CommandExecutionException;
-import itmo.cse.lab5.server.input.InputHandler;
+import itmo.cse.lab5.server.exceptions.CommandExecutionException;
+import itmo.cse.lab5.common.models.SpaceMarine;
+import itmo.cse.lab5.server.io.InputHandler;
 import itmo.cse.lab5.server.managers.CollectionManager;
-import itmo.cse.lab5.server.models.SpaceMarine;
 
 /**
  * Команда {@code add_if_min}: добавляет элемент, если он меньше минимального.
@@ -27,15 +26,16 @@ public class AddIfMinCommand extends Command {
      * Считывает элемент и пытается добавить его по условию {@code add_if_min}.
      *
      * @param args аргументы команды (не используются)
+     * @return текст результата выполнения
      * @throws CommandExecutionException если не удалось дочитать поля элемента
      */
     @Override
-    public void execute(String[] args) throws CommandExecutionException {
+    public String execute(String[] args) throws CommandExecutionException {
         SpaceMarine spaceMarine = inputHandler.readSpaceMarine();
         if (collectionManager.addIfMin(spaceMarine)) {
-            System.out.println("Элемент добавлен");
+            return "Элемент добавлен";
         } else {
-            System.err.println("Элемент НЕ добавлен, так как он НЕ меньше минимального");
+            return "Элемент НЕ добавлен, так как он НЕ меньше минимального";
         }
     }
 }

@@ -11,6 +11,7 @@
 /build/
 /out/
 target/
+logs/
 
 # Конфигурация IDE (Eclipse, IntelliJ IDEA, NetBeans и др.)
 *.iml

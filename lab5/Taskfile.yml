@@ -30,12 +30,14 @@ tasks:
     deps: [build]
     cmds:
       - java -jar {{.SERVER_JAR}} {{.DATA_FILE}}
+      # java -jar server/target/server-1.0.0-jar-with-dependencies.jar data/data.json
 
   run:client:
     desc: Run client jar
     deps: [build]
     cmds:
       - java -jar {{.CLIENT_JAR}} {{.DATA_FILE}}
+      # java -jar client/target/client-1.0.0-jar-with-dependencies.jar data/data.json
 
   run:all:
     desc: Run server and client

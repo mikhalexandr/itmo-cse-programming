@@ -1,7 +1,8 @@
 package itmo.cse.lab5.server.commands;
 
-import itmo.cse.lab5.common.commands.Command;
 import itmo.cse.lab5.server.managers.CommandManager;
+
+import java.util.stream.Collectors;
 
 /**
  * Команда {@code history}: выводит историю выполненных команд.
@@ -21,15 +22,15 @@ public class HistoryCommand extends Command {
      * Печатает список последних выполненных команд.
      *
      * @param args аргументы команды (не используются)
+     * @return текст результата выполнения
      */
     @Override
-    public void execute(String[] args) {
+    public String execute(String[] args) {
         var history = commandManager.getHistory();
         if (history.isEmpty()) {
-            System.out.println("История команд пуста");
-            return;
+            return "История команд пуста";
         }
-        System.out.println("Последние команды:");
-        history.forEach(command -> System.out.println("  " + command));
+        return "Последние команды:" + System.lineSeparator()
+                + history.stream().map(command -> "  " + command).collect(Collectors.joining(System.lineSeparator()));
     }
 }

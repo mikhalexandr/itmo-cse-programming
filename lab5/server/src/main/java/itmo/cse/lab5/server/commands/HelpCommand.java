@@ -1,6 +1,5 @@
 package itmo.cse.lab5.server.commands;
 
-import itmo.cse.lab5.common.commands.Command;
 import itmo.cse.lab5.server.managers.CommandManager;
 
 /**
@@ -23,10 +22,12 @@ public class HelpCommand extends Command {
      * @param args аргументы команды (не используются)
      */
     @Override
-    public void execute(String[] args) {
+    public String execute(String[] args) {
+        StringBuilder builder = new StringBuilder();
         commandManager.getCommands()
                 .forEach((name, command)
-                        -> System.out.printf("  %-30s → %s%n",
-                        command.getArgs().isEmpty() ? name : name + " " + command.getArgs(), command.getDescription()));
+                        -> builder.append(String.format("  %-30s → %s%n",
+                        command.getArgs().isEmpty() ? name : name + " " + command.getArgs(), command.getDescription())));
+        return builder.toString().stripTrailing();
     }
 }

@@ -1,7 +1,6 @@
 package itmo.cse.lab5.server.commands;
 
-import itmo.cse.lab5.common.commands.Command;
-import itmo.cse.lab5.common.exceptions.CommandExecutionException;
+import itmo.cse.lab5.server.exceptions.CommandExecutionException;
 import itmo.cse.lab5.server.managers.CollectionManager;
 
 /**
@@ -22,19 +21,20 @@ public class RemoveByIdCommand extends Command {
      * Удаляет элемент по идентификатору.
      *
      * @param args ожидается один аргумент: id
+     * @return текст результата выполнения
      * @throws CommandExecutionException если id не передан или имеет неверный формат
      */
     @Override
-    public void execute(String[] args) throws CommandExecutionException {
+    public String execute(String[] args) throws CommandExecutionException {
         if (args.length == 0) {
             throw new CommandExecutionException("Использование: remove_by_id <id>");
         }
         try {
             int id = Integer.parseInt(args[0]);
             if (collectionManager.removeById(id)) {
-                System.out.println("Элемент удалён");
+                return "Элемент удалён";
             } else {
-                System.out.printf("Элемент с id=%d не найден%n", id);
+                return String.format("Элемент с id=%d не найден", id);
             }
         } catch (NumberFormatException e) {
             throw new CommandExecutionException("id должен быть числом");

@@ -1,9 +1,12 @@
 package itmo.cse.lab5.server.managers;
 
-import itmo.cse.lab5.common.commands.Command;
-import itmo.cse.lab5.common.exceptions.CommandExecutionException;
+import itmo.cse.lab5.server.exceptions.CommandExecutionException;
+import itmo.cse.lab5.common.dto.request.CommandRequest;
+import itmo.cse.lab5.common.dto.response.CommandResponse;
+import itmo.cse.lab5.server.commands.CommandContract;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +14,9 @@ import java.util.Map;
 /**
  * Хранит зарегистрированные команды и исполняет их по строковому вводу.
  */
-public class CommandManager {
+public class CommandManager implements CommandExecutor {
     private static final int HISTORY_SIZE = 5;
-    private final Map<String, Command> commands = new LinkedHashMap<>();
+    private final Map<String, CommandContract> commands = new LinkedHashMap<>();
     private final List<String> history = new ArrayList<>();
 
     /**
@@ -21,35 +24,52 @@ public class CommandManager {
      *
      * @param command экземпляр команды
      */
-    public void register(Command command) {
+    public void register(CommandContract command) {
+        if (commands.containsKey(command.getName())) {
+            throw new IllegalStateException(String.format("Команда '%s' уже зарегистрирована", command.getName()));
+        }
         commands.put(command.getName(), command);
     }
 
     /**
-     * Парсит пользовательский ввод и вызывает соответствующую команду.
+     * Регистрирует карту команд.
      *
-     * @param input строка, введенная пользователем
+     * @param commandMap карта команд
      */
-    public void execute(String input) {
-        if (input == null || input.trim().isEmpty()) {
-            return;
+    public void registerAll(Map<String, CommandContract> commandMap) {
+        for (Map.Entry<String, CommandContract> entry : commandMap.entrySet()) {
+            register(entry.getValue());
+        }
+    }
+
+    /**
+     * Выполняет команду из запроса и возвращает ответ.
+     *
+     * @param request запрос на выполнение команды
+     * @return результат выполнения
+     */
+    @Override
+    public CommandResponse execute(CommandRequest request) {
+        if (request == null || request.getCommandName() == null || request.getCommandName().isBlank()) {
+            return CommandResponse.failure("Пустая команда");
         }
 
-        String[] parts = input.trim().split("\\s+", 2);
-        String name = parts[0].toLowerCase();
-        String[] args = parts.length > 1 ? new String[]{parts[1]} : new String[]{};
+        String name = request.getCommandName().toLowerCase();
+        String[] args = request.getCommandArguments();
 
-        Command command = commands.get(name);
+        CommandContract command = commands.get(name);
         if (command == null) {
-            System.err.printf("Неизвестная команда: %s. Введите help для отображения списка команд%n", name);
-            return;
+            return CommandResponse.failure(
+                    String.format("Неизвестная команда: %s. Введите help для отображения списка команд", name)
+            );
         }
 
         try {
-            command.execute(args);
-            addToHistory(name);
+            String result = command.execute(args);
+            addToHistory(name, command.getArgs());
+            return CommandResponse.success(result, command.shouldExit());
         } catch (CommandExecutionException e) {
-            System.err.printf("Ошибка выполнения команды: %s%n", e.getMessage());
+            return CommandResponse.failure(String.format("Ошибка выполнения команды: %s", e.getMessage()));
         }
     }
 
@@ -58,8 +78,9 @@ public class CommandManager {
      *
      * @param name имя выполненной команды
      */
-    public void addToHistory(String name) {
-        history.add(name);
+    public void addToHistory(String name, String args) {
+        String info = name + " " + args;
+        history.add(info);
         if (history.size() > HISTORY_SIZE) {
             history.remove(0);
         }
@@ -69,13 +90,13 @@ public class CommandManager {
      * @return список недавно выполненных команд
      */
     public List<String> getHistory() {
-        return history;
+        return Collections.unmodifiableList(history);
     }
 
     /**
      * @return карта зарегистрированных команд
      */
-    public Map<String, Command> getCommands() {
-        return commands;
+    public Map<String, CommandContract> getCommands() {
+        return Collections.unmodifiableMap(commands);
     }
 }

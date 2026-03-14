@@ -1,10 +1,9 @@
 package itmo.cse.lab5.server.commands;
 
-import itmo.cse.lab5.common.commands.Command;
-import itmo.cse.lab5.common.exceptions.CommandExecutionException;
-import itmo.cse.lab5.server.input.InputHandler;
+import itmo.cse.lab5.server.exceptions.CommandExecutionException;
+import itmo.cse.lab5.common.models.SpaceMarine;
+import itmo.cse.lab5.server.io.InputHandler;
 import itmo.cse.lab5.server.managers.CollectionManager;
-import itmo.cse.lab5.server.models.SpaceMarine;
 
 /**
  * Команда {@code add}: добавляет новый элемент в коллекцию.
@@ -27,12 +26,13 @@ public class AddCommand extends Command {
      * Считывает элемент и добавляет его в коллекцию.
      *
      * @param args аргументы команды (не используются)
+     * @return текст результата выполнения
      * @throws CommandExecutionException если не удалось дочитать поля элемента
      */
     @Override
-    public void execute(String[] args) throws CommandExecutionException {
+    public String execute(String[] args) throws CommandExecutionException {
         SpaceMarine spaceMarine = inputHandler.readSpaceMarine();
         collectionManager.add(spaceMarine);
-        System.out.println("Элемент успешно добавлен");
+        return "Элемент успешно добавлен";
     }
 }

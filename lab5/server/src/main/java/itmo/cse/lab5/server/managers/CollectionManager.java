@@ -1,7 +1,7 @@
 package itmo.cse.lab5.server.managers;
 
-import itmo.cse.lab5.server.models.AstartesCategory;
-import itmo.cse.lab5.server.models.SpaceMarine;
+import itmo.cse.lab5.common.models.AstartesCategory;
+import itmo.cse.lab5.common.models.SpaceMarine;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;

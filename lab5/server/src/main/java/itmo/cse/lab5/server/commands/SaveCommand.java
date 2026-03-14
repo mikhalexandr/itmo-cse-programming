@@ -1,7 +1,7 @@
 package itmo.cse.lab5.server.commands;
 
-import itmo.cse.lab5.common.commands.Command;
-import itmo.cse.lab5.common.exceptions.FileWriteException;
+import itmo.cse.lab5.server.exceptions.CommandExecutionException;
+import itmo.cse.lab5.server.exceptions.FileWriteException;
 import itmo.cse.lab5.server.managers.CollectionManager;
 import itmo.cse.lab5.server.managers.FileManager;
 
@@ -26,14 +26,16 @@ public class SaveCommand extends Command {
      * Сохраняет текущую коллекцию в файл.
      *
      * @param args аргументы команды (не используются)
+     * @return текст результата выполнения
+     * @throws CommandExecutionException если сохранение не удалось
      */
     @Override
-    public void execute(String[] args) {
+    public String execute(String[] args) throws CommandExecutionException {
         try {
             fileManager.save(collectionManager.getCollection());
-            System.out.println("Коллекция сохранена");
+            return "Коллекция сохранена";
         } catch (FileWriteException e) {
-            System.out.printf("Ошибка сохранения: %s", e.getMessage());
+            throw new CommandExecutionException("Ошибка сохранения: " + e.getMessage());
         }
     }
 }
