@@ -1,4 +1,4 @@
-package itmo.cse.lab5.common.exceptions;
+package itmo.cse.lab5.server.exceptions;
 
 /**
  * Ошибка выполнения пользовательской команды.
